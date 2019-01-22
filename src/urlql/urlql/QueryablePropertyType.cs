@@ -13,8 +13,8 @@ namespace urlql
         /// <summary>
         /// Reference Type
         /// </summary>
-        [Description("Reference")]
-        Reference = -1,
+        [Description("Object")]
+        Object = -1,
 
         /// <summary>
         /// Undefined

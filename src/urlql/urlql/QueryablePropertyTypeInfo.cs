@@ -32,7 +32,7 @@ namespace urlql
         /// <summary>
         /// Object Type
         /// </summary>
-        public static readonly QueryablePropertyTypeInfo Object = new QueryablePropertyTypeInfo("Object", QueryablePropertyType.Reference, typeof(object));
+        public static readonly QueryablePropertyTypeInfo Object = new QueryablePropertyTypeInfo("Object", QueryablePropertyType.Object, typeof(object));
         /// <summary>
         /// Numeric Type
         /// </summary>

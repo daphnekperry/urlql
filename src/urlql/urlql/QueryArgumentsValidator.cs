@@ -155,7 +155,7 @@ namespace urlql
                             return false;
                     }
                 case QueryablePropertyType.Undefined:
-                case QueryablePropertyType.Reference:
+                case QueryablePropertyType.Object:
                     return false;
                 default:
                     return operationType == propertyType;

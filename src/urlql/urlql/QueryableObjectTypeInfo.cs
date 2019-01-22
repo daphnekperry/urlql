@@ -11,7 +11,7 @@ namespace urlql
         /// <summary>
         /// CLR Type
         /// </summary>
-        public readonly Type ObjectType;
+        public readonly Type ClrType;
 
         /// <summary>
         /// Property Name and Query Property Type definitions
@@ -24,8 +24,8 @@ namespace urlql
         /// <param name="objectType"></param>
         public QueryableObjectTypeInfo(Type objectType)
         {
-            ObjectType = objectType;
-            var props = ObjectType.GetProperties();
+            ClrType = objectType;
+            var props = ClrType.GetProperties();
 
             foreach (var p in props)
             {
@@ -37,7 +37,7 @@ namespace urlql
                 }
             }
 
-            var fields = ObjectType.GetFields();
+            var fields = ClrType.GetFields();
             foreach (var f in fields)
             {
                 var propertyName = f.Name;
