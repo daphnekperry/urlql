@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -11,7 +12,7 @@ namespace urlql
     /// <summary>
     /// Validates Query Arguments against QueryableTypeInfo
     /// </summary>
-    public class QueryValidator
+    public class QueryArgumentsValidator
     {
         /// <summary>
         /// Query Options
@@ -28,7 +29,7 @@ namespace urlql
         /// </summary>
         /// <param name="options"></param>
         /// <param name="typeInfo"></apram>
-        public QueryValidator(QueryOptions options, QueryableObjectTypeInfo typeInfo)
+        public QueryArgumentsValidator(QueryOptions options, QueryableObjectTypeInfo typeInfo)
         {
             this.options = options;
             this.typeInfo = typeInfo;
@@ -55,6 +56,11 @@ namespace urlql
         /// <returns></returns>
         public bool Validate(IAliasableStatement statement)
         {
+            if (!IsValidIdentifier(statement.Alias?.NewName ?? @"true"))
+            {
+                return false;
+            }
+
             if (statement is Selection s)
             {
                 var prop = typeInfo.GetPropertyTypeInfo(s.PropertyName);
@@ -77,14 +83,20 @@ namespace urlql
             return false;
         }
 
-        public bool Validate(IGroupingStatement statement)
+        /// <summary>
+        /// Validate an Aggregation against the QueryValidator's QueryableObjectTypeInfo and the Aggregation type
+        /// </summary>
+        /// <param name="statement"></param>
+        /// <returns></returns>
+        public bool Validate(Aggregation aggregation)
         {
-            var prop = typeInfo.GetPropertyTypeInfo(statement.PropertyName);
-            if (prop == null)
+            var prop = typeInfo.GetPropertyTypeInfo(aggregation.PropertyName);
+            if (prop == null || (int)prop.PropertyType < (int)QueryablePropertyType.Undefined)
             {
                 return false;
             }
-            return true;
+
+            return IsOperationValidForType(prop.PropertyType, aggregation.AggregationOperation.PropertyType);
         }
 
         /// <summary>
@@ -97,108 +109,113 @@ namespace urlql
             if (statement is Comparison c)
             {
                 var prop = typeInfo.GetPropertyTypeInfo(c.PropertyName);
-                if (prop == null || (int)prop.PropertyType < (int)QueryablePropertyTypeCode.Undefined)
+                if (prop == null || (int)prop.PropertyType < (int)QueryablePropertyType.Undefined)
                 {
                     return false;
                 }
 
-                switch (c.ComparisonOperation.PropertyType)
-                {
-                    case QueryablePropertyTypeCode.Any:
-                        switch (prop.PropertyType)
-                        {
-                            case QueryablePropertyTypeCode.Text:
-                                return IsValueOfTypeText(c.RightOperand);
-                            case QueryablePropertyTypeCode.Numeric:
-                                return IsValueOfTypeNumeric(c.RightOperand);
-                            case QueryablePropertyTypeCode.DateTime:
-                                return IsValueOfTypeDateTime(c.RightOperand);
-                            case QueryablePropertyTypeCode.Boolean:
-                                return IsValueOfTypeBoolean(c.RightOperand);
-                            case QueryablePropertyTypeCode.Guid:
-                                return IsValueOfTypeGuid(c.RightOperand);
-                            default:
-                                return false;
-                        }
-                    case QueryablePropertyTypeCode.Scalar:
-                        switch (prop.PropertyType)
-                        {
-                            case QueryablePropertyTypeCode.Numeric:
-                                return IsValueOfTypeNumeric(c.RightOperand);
-                            case QueryablePropertyTypeCode.DateTime:
-                                return IsValueOfTypeDateTime(c.RightOperand);
-                            default:
-                                return false;
-                        }
-                    case QueryablePropertyTypeCode.Numeric:
-                        return (prop.PropertyType == QueryablePropertyTypeCode.Numeric) && IsValueOfTypeNumeric(c.RightOperand);
-                    case QueryablePropertyTypeCode.Text:
-                        return (prop.PropertyType == QueryablePropertyTypeCode.Text) && IsValueOfTypeText(c.RightOperand);
-                    case QueryablePropertyTypeCode.Boolean:
-                        return (prop.PropertyType == QueryablePropertyTypeCode.Boolean) && IsValueOfTypeBoolean(c.RightOperand);
-                    case QueryablePropertyTypeCode.DateTime:
-                        return (prop.PropertyType == QueryablePropertyTypeCode.DateTime) && IsValueOfTypeDateTime(c.RightOperand);
-                    case QueryablePropertyTypeCode.Guid:
-                        return (prop.PropertyType == QueryablePropertyTypeCode.Guid) && IsValueOfTypeGuid(c.RightOperand);
-                    default:
-                        return false;
-
-                }
+                return IsOperationValidForType(prop.PropertyType, c.ComparisonOperation.PropertyType) && IsValueValidForType(prop.PropertyType, c.RightOperand);
             }
             return true;
         }
 
-        /// <summary>
-        /// Validate an Aggregation against the QueryValidator's QueryableObjectTypeInfo and the Aggregation type
-        /// </summary>
-        /// <param name="statement"></param>
-        /// <returns></returns>
-        public bool Validate(Aggregation statement)
+        public bool Validate(IGroupingStatement statement)
         {
             var prop = typeInfo.GetPropertyTypeInfo(statement.PropertyName);
-            if (prop == null || (int)prop.PropertyType < (int)QueryablePropertyTypeCode.Undefined)
+            if (prop == null)
             {
                 return false;
             }
+            return true;
+        }
 
-            switch (statement.AggregationOperation.PropertyType)
+        protected bool IsOperationValidForType(QueryablePropertyType propertyType, QueryablePropertyType operationType)
+        {
+            switch (operationType)
             {
-                case QueryablePropertyTypeCode.Any:
-                    switch (prop.PropertyType)
+                case QueryablePropertyType.Any:
+                    switch (propertyType)
                     {
-                        case QueryablePropertyTypeCode.Text:
-                        case QueryablePropertyTypeCode.Numeric:
-                        case QueryablePropertyTypeCode.DateTime:
-                        case QueryablePropertyTypeCode.Boolean:
-                        case QueryablePropertyTypeCode.Guid:
+                        case QueryablePropertyType.Text:
+                        case QueryablePropertyType.Numeric:
+                        case QueryablePropertyType.DateTime:
+                        case QueryablePropertyType.Boolean:
+                        case QueryablePropertyType.Guid:
                             return true;
                         default:
                             return false;
                     }
-                case QueryablePropertyTypeCode.Scalar:
-                    switch (prop.PropertyType)
+                case QueryablePropertyType.Scalar:
+                    switch (propertyType)
                     {
-                        case QueryablePropertyTypeCode.Numeric:
-                        case QueryablePropertyTypeCode.DateTime:
+                        case QueryablePropertyType.Numeric:
+                        case QueryablePropertyType.DateTime:
                             return true;
                         default:
                             return false;
                     }
-                case QueryablePropertyTypeCode.Numeric:
-                    return prop.PropertyType == QueryablePropertyTypeCode.Numeric;
-                case QueryablePropertyTypeCode.Text:
-                    return prop.PropertyType == QueryablePropertyTypeCode.Text;
-                case QueryablePropertyTypeCode.Boolean:
-                    return prop.PropertyType == QueryablePropertyTypeCode.Boolean;
-                case QueryablePropertyTypeCode.DateTime:
-                    return prop.PropertyType == QueryablePropertyTypeCode.DateTime;
-                case QueryablePropertyTypeCode.Guid:
-                    return prop.PropertyType == QueryablePropertyTypeCode.Guid;
+                case QueryablePropertyType.Undefined:
+                case QueryablePropertyType.Reference:
+                    return false;
+                default:
+                    return operationType == propertyType;
+            }
+        }
+
+        protected bool IsValueValidForType(QueryablePropertyType typeCode, string value)
+        {
+            switch (typeCode)
+            {
+                case QueryablePropertyType.Text:
+                    return IsValueOfTypeText(value);
+                case QueryablePropertyType.Numeric:
+                    return IsValueOfTypeNumeric(value);
+                case QueryablePropertyType.DateTime:
+                    return IsValueOfTypeDateTime(value);
+                case QueryablePropertyType.Boolean:
+                    return IsValueOfTypeBoolean(value);
+                case QueryablePropertyType.Guid:
+                    return IsValueOfTypeGuid(value);
                 default:
                     return false;
             }
         }
 
+        /// <summary>
+        /// Is Valid Identifier
+        /// </summary>
+        /// <param name="identifierName"></param>
+        ///<remarks>Lovingly borrowed from https://stackoverflow.com/a/51181944 </remarks>
+        protected bool IsValidIdentifier(string identifierName)
+        {
+            if (string.IsNullOrEmpty(identifierName))
+            {
+                throw new ArgumentNullException(nameof(identifierName));
+            }
+
+            // Technically the input must be in normal form C. Implementations aren't required
+            // to verify that though, so you could remove this check if your runtime doesn't
+            // mind.
+            if (!identifierName.IsNormalized())
+            {
+                return false;
+            }
+
+            // Convert escape sequences to the characters they represent. The only allowed escape
+            // sequences are of form \u0000 or \U0000, where 0 is a hex digit.
+            MatchEvaluator replacer = (Match match) =>
+            {
+                string hex = match.Groups[1].Value;
+                var codepoint = int.Parse(hex, NumberStyles.HexNumber);
+                return new string((char)codepoint, 1);
+            };
+            var escapeSequencePattern = @"\\[Uu]([\dA-Fa-f]{4})";
+            var withoutEscapes = Regex.Replace(identifierName, escapeSequencePattern, replacer, RegexOptions.CultureInvariant);
+
+            // Now do the real check.
+            var isIdentifier = @"^@?[\p{L}\p{Nl}_][\p{Cf}\p{L}\p{Mc}\p{Mn}\p{Nd}\p{Nl}\p{Pc}]*$";
+            return Regex.IsMatch(withoutEscapes, isIdentifier, RegexOptions.CultureInvariant);
+        }
 
         /// <summary>
         /// Validates that the value provided is contains a Numeric Type
@@ -249,15 +266,15 @@ namespace urlql
         }
 
         /// <summary>
-        /// Validates that the value provided is a String Type
+        /// Validates that the value provided is a String type.
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
         public bool IsValueOfTypeText(string value)
         {
             var text = value.ToString().Trim();
-            var textParsed = Regex.Split(text, StringExtensions.StringLiteralRegex);
-            if (textParsed.Length != 1)
+            var textParsed = text.Tokenize();
+            if (textParsed.Count() != 1)
             {
                 return false;
             }
@@ -281,7 +298,5 @@ namespace urlql
             }
             return false;
         }
-
-
     }
 }

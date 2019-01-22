@@ -41,89 +41,89 @@ namespace urlql.Expressions
         /// <summary>
         /// The type(s) valid for the operation.
         /// </summary>
-        public readonly QueryablePropertyTypeCode PropertyType;
+        public readonly QueryablePropertyType PropertyType;
 
         /// <summary>
         /// Equals (==)
         /// </summary>
         [Description("Equals")]
-        public static readonly ComparisonOperation eq = new ComparisonOperation("eq", ComparisonOperationType.Equal, "it.{0} == {1}", true, QueryablePropertyTypeCode.Any);
+        public static readonly ComparisonOperation eq = new ComparisonOperation("eq", ComparisonOperationType.Equal, "it.{0} == {1}", true, QueryablePropertyType.Any);
 
         /// <summary>
         /// Not Equals (!=)
         /// </summary>
         [Description("Not Equals")]
-        public static readonly ComparisonOperation ne = new ComparisonOperation("ne", ComparisonOperationType.NotEqual, "it.{0} != {1}", true, QueryablePropertyTypeCode.Any);
+        public static readonly ComparisonOperation ne = new ComparisonOperation("ne", ComparisonOperationType.NotEqual, "it.{0} != {1}", true, QueryablePropertyType.Any);
         
         /// <summary>
         /// Less Than (&lt;)
         /// </summary>
-        public static readonly ComparisonOperation lt = new ComparisonOperation("lt", ComparisonOperationType.LessThan, "it.{0} < {1}", true, QueryablePropertyTypeCode.Any);
+        public static readonly ComparisonOperation lt = new ComparisonOperation("lt", ComparisonOperationType.LessThan, "it.{0} < {1}", true, QueryablePropertyType.Any);
         
         /// <summary>
         /// Greater Than (&gt;)
         /// </summary>
-        public static readonly ComparisonOperation gt = new ComparisonOperation("gt", ComparisonOperationType.GreaterThan, "it.{0} > {1}", true, QueryablePropertyTypeCode.Any);
+        public static readonly ComparisonOperation gt = new ComparisonOperation("gt", ComparisonOperationType.GreaterThan, "it.{0} > {1}", true, QueryablePropertyType.Any);
         
         /// <summary>
         /// Less Than or Equal To (&lt;=)
         /// </summary>
-        public static readonly ComparisonOperation le = new ComparisonOperation("le", ComparisonOperationType.LessThanOrEqual, "it.{0} <= {1}", true, QueryablePropertyTypeCode.Any);
+        public static readonly ComparisonOperation le = new ComparisonOperation("le", ComparisonOperationType.LessThanOrEqual, "it.{0} <= {1}", true, QueryablePropertyType.Any);
         
         /// <summary>
         /// Greater Than or Equal To (&gt;=)
         /// </summary>
-        public static readonly ComparisonOperation ge = new ComparisonOperation("ge", ComparisonOperationType.GreaterThanOrEqual, "it.{0} >= {1}", true, QueryablePropertyTypeCode.Any);
+        public static readonly ComparisonOperation ge = new ComparisonOperation("ge", ComparisonOperationType.GreaterThanOrEqual, "it.{0} >= {1}", true, QueryablePropertyType.Any);
         
         /// <summary>
         /// Contains Text
         /// </summary>
-        public static readonly ComparisonOperation cn = new ComparisonOperation("cn", ComparisonOperationType.ContainsText, "it.{0}.Contains({1})", true, QueryablePropertyTypeCode.Text);
+        public static readonly ComparisonOperation cn = new ComparisonOperation("cn", ComparisonOperationType.ContainsText, "it.{0}.Contains({1})", true, QueryablePropertyType.Text);
         
         /// <summary>
         /// Does Not Contain Text
         /// </summary>
-        public static readonly ComparisonOperation nc = new ComparisonOperation("nc", ComparisonOperationType.DoesNotContainText, "!(it.{0}.Contains({1}))", true, QueryablePropertyTypeCode.Text);
+        public static readonly ComparisonOperation nc = new ComparisonOperation("nc", ComparisonOperationType.DoesNotContainText, "!(it.{0}.Contains({1}))", true, QueryablePropertyType.Text);
         
         /// <summary>
         /// Starts With Text
         /// </summary>
-        public static readonly ComparisonOperation st = new ComparisonOperation("st", ComparisonOperationType.StartsWithText, "it.{0}.StartsWith({1})", true, QueryablePropertyTypeCode.Text);
+        public static readonly ComparisonOperation st = new ComparisonOperation("st", ComparisonOperationType.StartsWithText, "it.{0}.StartsWith({1})", true, QueryablePropertyType.Text);
         
         /// <summary>
         /// Ends With Text
         /// </summary>
-        public static readonly ComparisonOperation ed = new ComparisonOperation("ed", ComparisonOperationType.EndsWithText, "it.{0}.EndsWith({1})", true, QueryablePropertyTypeCode.Text);
+        public static readonly ComparisonOperation ed = new ComparisonOperation("ed", ComparisonOperationType.EndsWithText, "it.{0}.EndsWith({1})", true, QueryablePropertyType.Text);
         
         /// <summary>
         /// Equals Case Insensitive Text
         /// </summary>
-        public static readonly ComparisonOperation ieq = new ComparisonOperation("ieq", ComparisonOperationType.EqualCI, "it.{0}.ToLower() == {1}", true, QueryablePropertyTypeCode.Text);
+        public static readonly ComparisonOperation ieq = new ComparisonOperation("ieq", ComparisonOperationType.EqualCI, "it.{0}.ToLower() == {1}", true, QueryablePropertyType.Text);
         
         /// <summary>
         /// Not Equals Case Insensitive Text
         /// </summary>
-        public static readonly ComparisonOperation ine = new ComparisonOperation("ine", ComparisonOperationType.NotEqualCI, "it.{0}.ToLower() != {1}", true, QueryablePropertyTypeCode.Text);
+        public static readonly ComparisonOperation ine = new ComparisonOperation("ine", ComparisonOperationType.NotEqualCI, "it.{0}.ToLower() != {1}", true, QueryablePropertyType.Text);
         
         /// <summary>
         /// Contains Case Insensitive Text
         /// </summary>
-        public static readonly ComparisonOperation icn = new ComparisonOperation("icn", ComparisonOperationType.ContainsTextCI, "it.{0}.ToLower().Contains({1})", true, QueryablePropertyTypeCode.Text);
+        public static readonly ComparisonOperation icn = new ComparisonOperation("icn", ComparisonOperationType.ContainsTextCI, "it.{0}.ToLower().Contains({1})", true, QueryablePropertyType.Text);
         
         /// <summary>
         /// Does Not Contain Case Insensitive Text
         /// </summary>
-        public static readonly ComparisonOperation inc = new ComparisonOperation("inc", ComparisonOperationType.DoesNotContainTextCI, "!(it.{0}.ToLower().Contains({1}))", true, QueryablePropertyTypeCode.Text);
+        public static readonly ComparisonOperation inc = new ComparisonOperation("inc", ComparisonOperationType.DoesNotContainTextCI, "!(it.{0}.ToLower().Contains({1}))", true, QueryablePropertyType.Text);
         
         /// <summary>
         /// Starts With Case Insensitive Text
         /// </summary>
-        public static readonly ComparisonOperation ist = new ComparisonOperation("ist", ComparisonOperationType.StartsWithTextCI, "it.{0}.ToLower().StartsWith({1})", true, QueryablePropertyTypeCode.Text);
+        public static readonly ComparisonOperation ist = new ComparisonOperation("ist", ComparisonOperationType.StartsWithTextCI, "it.{0}.ToLower().StartsWith({1})", true, QueryablePropertyType.Text);
         
         /// <summary>
         /// Ends With Case Insensitive Text
         /// </summary>
-        public static readonly ComparisonOperation ied = new ComparisonOperation("ied", ComparisonOperationType.EndsWithTextCI, "it.{0}.ToLower().EndsWith({1})", true, QueryablePropertyTypeCode.Text);
+        public static readonly ComparisonOperation ied = new ComparisonOperation("ied", ComparisonOperationType.EndsWithTextCI, "it.{0}.ToLower().EndsWith({1})", true, QueryablePropertyType.Text);
 
         /// <summary>
         /// Operation definitions for Expression/Statement parsing
@@ -163,7 +163,7 @@ namespace urlql.Expressions
         /// <param name="type"></param>
         /// <param name="operandCount"></param>
         /// <param name="operationName"></param>
-        protected ComparisonOperation(string keyword, ComparisonOperationType type, string expression, bool isCaseSensitive, QueryablePropertyTypeCode propertyType)
+        protected ComparisonOperation(string keyword, ComparisonOperationType type, string expression, bool isCaseSensitive, QueryablePropertyType propertyType)
         {
             Keyword = Keyword;
             OperationType = type;
@@ -196,10 +196,6 @@ namespace urlql.Expressions
             return operation.Value;
         }
 
-        /// <summary>
-        /// Operation Dynamic Linq statement.
-        /// </summary>
-        /// <returns></returns>
         public override string ToString()
         {
             return Expression;

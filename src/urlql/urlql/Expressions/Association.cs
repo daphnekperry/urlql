@@ -18,7 +18,7 @@ namespace urlql.Expressions
             return AssociationOperation.ToString();
         }
 
-        public string ToString(QueryComparisonFormatter formatter)
+        public string ToString(QueryStatementFormatter formatter)
         {
             return this.ToString();
         }

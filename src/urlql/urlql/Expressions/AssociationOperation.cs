@@ -80,14 +80,5 @@ namespace urlql.Expressions
             var operation = definitions.Where(d => d.Value.OperationType == type).SingleOrDefault();
             return operation.Value;
         }
-
-        /// <summary>
-        /// Operation Dynamic Linq statement.
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return Expression;
-        }
     }
 }

@@ -23,5 +23,10 @@ namespace urlql.Expressions
         /// The operation Dynamic Linq statement template.
         /// </summary>
         string Expression { get; }
+
+        /// <summary>
+        /// ToString
+        /// </summary>
+        string ToString();
     }
 }

@@ -8,7 +8,7 @@ namespace urlql
     /// <summary>
     /// Formats IFilteringStatement arguments for Dynamic LINQ
     /// </summary>
-    public class QueryComparisonFormatter
+    public class QueryStatementFormatter
     {
         protected QueryOptions options {get;set;}
 
@@ -19,14 +19,14 @@ namespace urlql
         /// </summary>
         /// <param name="options"></param>
         /// <param name="typeInfo"></param>
-        public QueryComparisonFormatter(QueryOptions options, QueryableObjectTypeInfo typeInfo)
+        public QueryStatementFormatter(QueryOptions options, QueryableObjectTypeInfo typeInfo)
         {
             this.options = options;
             this.typeInfo = typeInfo;
         }
 
         /// <summary>
-        /// Formats text into the appropriate Dynamic LINQ expression for the type.
+        /// Formats the IFilteringStatement's Right Operand/Value into the appropriate Dynamic LINQ expression for the type.
         /// </summary>
         /// <param name="argument"></param>
         /// <param name="type"></param>
@@ -36,14 +36,14 @@ namespace urlql
             if (statement is Comparison c)
             {
                 var prop = typeInfo.GetPropertyTypeInfo(c.PropertyName);
-                if (prop == null || (int)prop.PropertyType < (int)QueryablePropertyTypeCode.Undefined)
+                if (prop == null || (int)prop.PropertyType < (int)QueryablePropertyType.Undefined)
                 {
                     return statement.ToString();
                 }
 
                 switch (c.ComparisonOperation.PropertyType)
                 {
-                    case QueryablePropertyTypeCode.DateTime:
+                    case QueryablePropertyType.DateTime:
                         System.DateTime.TryParseExact(c.RightOperand, options.DateTimeFormats, options.CultureInfo, options.DateTimeStyles, out var dateTime);
                         var operand = string.Format($"DateTime({dateTime.Ticks})");
                         if (dateTime.Kind != options.DateTimeKind)
@@ -60,7 +60,7 @@ namespace urlql
                             }
                         }
                         return operand;
-                    case QueryablePropertyTypeCode.Guid:
+                    case QueryablePropertyType.Guid:
                         return string.Format($"Guid.Parse(\"{c.RightOperand}\")");
                     default:
                         return c.RightOperand;

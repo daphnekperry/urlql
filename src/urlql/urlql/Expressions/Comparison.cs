@@ -7,7 +7,7 @@ namespace urlql.Expressions
     /// <summary>
     /// Comparison
     /// </summary>
-    public class Comparison : IQueryableStatement, IFilteringStatement
+    public class Comparison : IComparison, IFilteringStatement
     {
         /// <summary>
         /// Comparison Operation
@@ -49,18 +49,18 @@ namespace urlql.Expressions
         public override string ToString()
         {
             var argument = ComparisonOperation.IsCaseSensitive ? RightOperand : RightOperand.ToLower();
-            return string.Format(ComparisonOperation.ToString(), LeftOperand, argument);
+            return string.Format(ComparisonOperation.Expression, LeftOperand, argument);
         }
 
         /// <summary>
         /// Comparison as a Dynamic Linq statement
         /// </summary>
         /// <returns></returns>
-        public virtual string ToString(QueryComparisonFormatter formatter)
+        public virtual string ToString(QueryStatementFormatter formatter)
         {
             var argument = ComparisonOperation.IsCaseSensitive ? RightOperand : RightOperand.ToLower();
             argument = formatter.FormatValue(this);
-            return string.Format(ComparisonOperation.ToString(), LeftOperand, argument);
+            return string.Format(ComparisonOperation.Expression, LeftOperand, argument);
         }
     }
 }

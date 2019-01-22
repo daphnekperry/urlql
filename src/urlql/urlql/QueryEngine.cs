@@ -42,12 +42,12 @@ namespace urlql
         /// <summary>
         /// Query Validator
         /// </summary>
-        protected readonly QueryValidator validator;
+        protected readonly QueryArgumentsValidator validator;
 
         /// <summary>
         /// The options and settings used for applying query statements
         /// </summary>
-        protected readonly QueryComparisonFormatter formatter;
+        protected readonly QueryStatementFormatter formatter;
 
         /// <summary>
         /// Constructor
@@ -66,8 +66,8 @@ namespace urlql
                 opt = new QueryOptions();
             }
             options = opt;
-            validator = new QueryValidator(options, typeInfo);
-            formatter = new QueryComparisonFormatter(options, typeInfo);
+            validator = new QueryArgumentsValidator(options, typeInfo);
+            formatter = new QueryStatementFormatter(options, typeInfo);
         }
 
         /// <summary>

@@ -36,7 +36,7 @@ namespace urlql.Expressions
         /// <returns></returns>
         public override string ToString()
         {
-            return ($"{PropertyName} {OrderingOperation}");
+            return string.Format(OrderingOperation.Expression, PropertyName);
         }
     }
 }

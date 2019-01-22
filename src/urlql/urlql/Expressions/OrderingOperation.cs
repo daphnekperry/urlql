@@ -35,12 +35,12 @@ namespace urlql.Expressions
         /// <summary>
         /// Ascending
         /// </summary>
-        public static readonly OrderingOperation asc = new OrderingOperation("asc", OrderingOperationType.Ascending, " ascending ");
+        public static readonly OrderingOperation asc = new OrderingOperation("asc", OrderingOperationType.Ascending, "{0} ascending ");
 
         /// <summary>
         /// Descending
         /// </summary>
-        public static readonly OrderingOperation desc = new OrderingOperation("desc", OrderingOperationType.Descending, " descending ");
+        public static readonly OrderingOperation desc = new OrderingOperation("desc", OrderingOperationType.Descending, "{0} descending ");
 
         /// <summary>
         /// Operation definitions for Expression/Statement parsing

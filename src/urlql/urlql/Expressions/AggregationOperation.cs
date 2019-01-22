@@ -40,32 +40,32 @@ namespace urlql.Expressions
         /// <summary>
         /// The type(s) valid for the operation.
         /// </summary>
-        public readonly QueryablePropertyTypeCode PropertyType;
+        public readonly QueryablePropertyType PropertyType;
 
         /// <summary>
         /// Count
         /// </summary>
-        public static readonly AggregationOperation cnt = new AggregationOperation("cnt", AggregationOperationType.Count, "it.Count() as {1}", 1, QueryablePropertyTypeCode.Any);
+        public static readonly AggregationOperation cnt = new AggregationOperation("cnt", AggregationOperationType.Count, "it.Count() as {1}", 1, QueryablePropertyType.Any);
         /// <summary>
         /// Distinct Count
         /// </summary>
-        public static readonly AggregationOperation dct = new AggregationOperation("dct", AggregationOperationType.DistinctCount, "it.Select({0}).Distinct().Count() as {1}", 2, QueryablePropertyTypeCode.Any);
+        public static readonly AggregationOperation dct = new AggregationOperation("dct", AggregationOperationType.DistinctCount, "it.Select({0}).Distinct().Count() as {1}", 2, QueryablePropertyType.Any);
         /// <summary>
         /// Minimum
         /// </summary>
-        public static readonly AggregationOperation min = new AggregationOperation("min", AggregationOperationType.Minimum, "Min(it.{0}) as {1}", 2, QueryablePropertyTypeCode.Numeric);
+        public static readonly AggregationOperation min = new AggregationOperation("min", AggregationOperationType.Minimum, "Min(it.{0}) as {1}", 2, QueryablePropertyType.Numeric);
         /// <summary>
         /// Maximum
         /// </summary>
-        public static readonly AggregationOperation max = new AggregationOperation("max", AggregationOperationType.Maximum, "Max(it.{0}) as {1}", 2, QueryablePropertyTypeCode.Numeric);
+        public static readonly AggregationOperation max = new AggregationOperation("max", AggregationOperationType.Maximum, "Max(it.{0}) as {1}", 2, QueryablePropertyType.Numeric);
         /// <summary>
         /// Average
         /// </summary>
-        public static readonly AggregationOperation avg = new AggregationOperation("avg", AggregationOperationType.Average, "Average(it.{0}) as {1}", 2, QueryablePropertyTypeCode.Numeric);
+        public static readonly AggregationOperation avg = new AggregationOperation("avg", AggregationOperationType.Average, "Average(it.{0}) as {1}", 2, QueryablePropertyType.Numeric);
         /// <summary>
         /// Summation
         /// </summary>
-        public static readonly AggregationOperation sum = new AggregationOperation("sum", AggregationOperationType.Sum, "Sum(it.{0}) as {1}", 2, QueryablePropertyTypeCode.Numeric);
+        public static readonly AggregationOperation sum = new AggregationOperation("sum", AggregationOperationType.Sum, "Sum(it.{0}) as {1}", 2, QueryablePropertyType.Numeric);
 
         /// <summary>
         /// Operation definitions for Expression/Statement parsing
@@ -97,7 +97,7 @@ namespace urlql.Expressions
         /// <param name="type"></param>
         /// <param name="operandCount"></param>
         /// <param name="operationName"></param>
-        protected AggregationOperation(string keyword, AggregationOperationType type, string expression, int operandCount, QueryablePropertyTypeCode propertyType)
+        protected AggregationOperation(string keyword, AggregationOperationType type, string expression, int operandCount, QueryablePropertyType propertyType)
         {
             Keyword = keyword;
             OperationType = type;
@@ -128,15 +128,6 @@ namespace urlql.Expressions
         {
             var comp = definitions.Where(d => d.Value.OperationType == type).SingleOrDefault();
             return comp.Value;
-        }
-
-        /// <summary>
-        /// Operation Dynamic Linq statement.
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return Expression;
         }
     }
 }

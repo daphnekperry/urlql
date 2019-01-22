@@ -16,7 +16,7 @@ namespace urlql
         /// <summary>
         /// Property Name and Query Property Type definitions
         /// </summary>
-        protected IDictionary<string, QueryablePropertyType> typeDefinitions = new Dictionary<string, QueryablePropertyType>();
+        protected IDictionary<string, QueryablePropertyTypeInfo> typeDefinitions = new Dictionary<string, QueryablePropertyTypeInfo>();
 
         /// <summary>
         /// Constructor
@@ -32,7 +32,7 @@ namespace urlql
                 var propertyName = p.Name;
                 if (VisibleProperty(p))
                 {
-                    var queryType = QueryablePropertyType.GetQueryType(p.PropertyType);
+                    var queryType = QueryablePropertyTypeInfo.GetQueryType(p.PropertyType);
                     typeDefinitions.Add(propertyName, queryType);
                 }
             }
@@ -43,7 +43,7 @@ namespace urlql
                 var propertyName = f.Name;
                 if (VisibleProperty(f))
                 {
-                    var queryType = QueryablePropertyType.GetQueryType(f.DeclaringType);
+                    var queryType = QueryablePropertyTypeInfo.GetQueryType(f.DeclaringType);
                     typeDefinitions.Add(propertyName, queryType);
                 }
             }
@@ -54,7 +54,7 @@ namespace urlql
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public QueryablePropertyType GetPropertyTypeInfo(string propertyName)
+        public QueryablePropertyTypeInfo GetPropertyTypeInfo(string propertyName)
         {
             return typeDefinitions.Where(d=> d.Key.ToLowerInvariant() == propertyName.ToLowerInvariant()).SingleOrDefault().Value;
         }

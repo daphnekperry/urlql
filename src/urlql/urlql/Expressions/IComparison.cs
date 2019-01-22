@@ -4,8 +4,7 @@ using System.Text;
 
 namespace urlql.Expressions
 {
-    public interface IFilteringStatement : IStatement
+    public interface IComparison : IQueryableStatement
     {
-        string ToString(QueryStatementFormatter formatter);
     }
 }
