@@ -14,12 +14,12 @@ namespace urlql
         private IList<dynamic> resultList;
 
         /// <summary>
-        /// Starting row index (0 based) of the results (skip)
+        /// Starting row index (0 based)
         /// </summary>
         public int? StartRow { get; protected set; }
 
         /// <summary>
-        /// Ending row index (0 based) of the results (from take)
+        /// Ending row index (0 based)
         /// </summary>
         public int? EndRow { get; protected set; }
 
