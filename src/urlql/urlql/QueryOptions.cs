@@ -112,7 +112,7 @@ namespace urlql
         /// </summary>
         public QueryOptions()
         {
-            PageSize = DefaultMaximumPageSize;
+            MaximumPageSize = DefaultMaximumPageSize;
             PageSize = DefaultPageSize;
             CultureInfo = DefaultCultureInfo;
             NumberStyles = DefaultNumberStyles;

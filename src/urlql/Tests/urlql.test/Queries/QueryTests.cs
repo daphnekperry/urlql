@@ -161,4 +161,38 @@ namespace urlql.test.Queries
             Assert.AreEqual(r.idCount, 6);
         }
     }
+
+    public class PagingItems : QueryTests
+    {
+        protected override void Arrange()
+        {
+            base.Arrange();
+            options = new QueryOptions();
+            arguments = new QueryArguments();
+            arguments.Paging = new Paging(5, 5);
+            query = new QueryEngine(objects.AsQueryable(), arguments, options);
+        }
+
+        protected override void Act()
+        {
+            results = query.GetResultsAsync().Result;
+        }
+
+        [Test]
+        public void TakeFive()
+        {
+            //Assert.Brubeck
+            Assert.AreEqual(results.Count(), arguments.Paging.Take);
+        }
+
+        [Test]
+        public void StartedAtFive()
+        {
+            var index = arguments.Paging.Skip;
+            foreach (var r in results)
+            {
+                Assert.AreEqual((r as Foo).Id, this.objects.ElementAtOrDefault(index++).Id);
+            }
+        }
+    }
 }
