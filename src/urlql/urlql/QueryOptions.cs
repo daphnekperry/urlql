@@ -10,7 +10,7 @@ namespace urlql
     /// </summary>
     public class QueryOptions
     {
-        private static int _maxPageSize = UInt16.MaxValue;
+        private static int _maxPageSize = Int16.MaxValue;
 
         private static int _pageSize = 100;
 
