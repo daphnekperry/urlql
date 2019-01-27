@@ -6,9 +6,9 @@ using System.Text;
 namespace urlql.test
 {
     [TestFixture]
-    public abstract class Specificaton
+    public abstract class Specification
     {
-        public Specificaton()
+        public Specification()
         {
         }
 

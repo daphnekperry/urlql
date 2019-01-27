@@ -131,15 +131,31 @@ namespace urlql
             IsLastPage = original.IsLastPage;
         }
 
+        /// <summary>
+        /// Address element by index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         object IReadOnlyList<object>.this[int index] => resultList[index];
 
+        /// <summary>
+        /// Count of results
+        /// </summary>
         int IReadOnlyCollection<object>.Count => resultList.Count;
 
+        /// <summary>
+        /// Get Enumerator
+        /// </summary>
+        /// <returns></returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.resultList.GetEnumerator();
         }
 
+        /// <summary>
+        /// Get Enumerator
+        /// </summary>
+        /// <returns></returns>
         IEnumerator<object> IEnumerable<object>.GetEnumerator()
         {
             return this.resultList.GetEnumerator();

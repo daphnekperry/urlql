@@ -7,7 +7,7 @@ using urlql.Expressions;
 
 namespace urlql.test.Parsers
 {
-    public class FilteringStatementParserTests : Specificaton
+    public class FilteringStatementParserTests : Specification
     {
         public string expression { get; set; }
         public IList<IFilteringStatement> statements { get; set; }

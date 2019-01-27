@@ -7,10 +7,10 @@ using urlql.Expressions;
 
 namespace urlql.test.Queries
 {
-    public class QueryTests : Specificaton
+    public class QueryTests : Specification
     {
         public IEnumerable<Foo> objects;
-        public QueryEngine query;
+        public QueryResolver query;
         public QueryOptions options;
         public QueryArguments arguments;
         public QueryResult results;
@@ -29,7 +29,7 @@ namespace urlql.test.Queries
             options = new QueryOptions();
             arguments = new QueryArguments();
             arguments.Selections = new List<ISelectionStatement>() { new Selection("id") };
-            query = new QueryEngine(objects.AsQueryable(), arguments, options);
+            query = new QueryResolver(objects.AsQueryable(), arguments, options);
         }
 
         protected override void Act()
@@ -54,7 +54,7 @@ namespace urlql.test.Queries
             options = new QueryOptions();
             arguments = new QueryArguments();
             arguments.Filtering = new List<IFilteringStatement>() { new Comparison(ComparisonOperation.eq, "id", id.ToString()) };
-            query = new QueryEngine(objects.AsQueryable(), arguments, options);
+            query = new QueryResolver(objects.AsQueryable(), arguments, options);
         }
 
         protected override void Act()
@@ -79,7 +79,7 @@ namespace urlql.test.Queries
             options = new QueryOptions();
             arguments = new QueryArguments();
             arguments.Ordering = new List<IOrderingStatement>() { new Ordering("id", OrderingOperation.desc) };
-            query = new QueryEngine(objects.AsQueryable(), arguments, options);
+            query = new QueryResolver(objects.AsQueryable(), arguments, options);
         }
 
         protected override void Act()
@@ -106,7 +106,7 @@ namespace urlql.test.Queries
             options = new QueryOptions();
             arguments = new QueryArguments();
             arguments.Selections = new List<ISelectionStatement>() { new Aggregation(AggregationOperation.max, "id", new Alias("id", "maxId")) };
-            query = new QueryEngine(objects.AsQueryable(), arguments, options);
+            query = new QueryResolver(objects.AsQueryable(), arguments, options);
         }
 
         protected override void Act()
@@ -142,7 +142,7 @@ namespace urlql.test.Queries
             {
                 new Grouping("CountLong")
             };
-            query = new QueryEngine(objects.AsQueryable(), arguments, options);
+            query = new QueryResolver(objects.AsQueryable(), arguments, options);
         }
 
         protected override void Act()
@@ -169,7 +169,7 @@ namespace urlql.test.Queries
             options = new QueryOptions();
             arguments = new QueryArguments();
             arguments.Paging = new Paging(5, 5);
-            query = new QueryEngine(objects.AsQueryable(), arguments, options);
+            query = new QueryResolver(objects.AsQueryable(), arguments, options);
         }
 
         protected override void Act()

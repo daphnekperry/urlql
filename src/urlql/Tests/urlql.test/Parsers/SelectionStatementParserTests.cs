@@ -8,7 +8,7 @@ using urlql.Expressions;
 
 namespace urlql.test.Parsers
 {
-    public class SelectionStatementParserTests : Specificaton
+    public class SelectionStatementParserTests : Specification
     {
         public string expression { get; set; }
         public IList<ISelectionStatement> statements { get; set; }

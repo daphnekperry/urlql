@@ -12,7 +12,7 @@ namespace urlql
     /// <summary>
     /// Applies a Query Against an IQueryable
     /// </summary>
-    public class QueryEngine
+    public class QueryResolver
     {
         /// <summary>
         /// The result of the applied query statements
@@ -55,7 +55,7 @@ namespace urlql
         /// <param name="queryable"></param>
         /// <param name="args"></param>
         /// <param name="opt"></param>
-        public QueryEngine(IQueryable queryable, QueryArguments args, QueryOptions opt = null)
+        public QueryResolver(IQueryable queryable, QueryArguments args, QueryOptions opt = null)
         {
             sourceQueryable = queryable;
             typeInfo = new QueryableObjectTypeInfo(queryable.ElementType);
@@ -125,7 +125,7 @@ namespace urlql
         /// <returns></returns>
         public virtual IList<dynamic> GetObjects()
         {
-            return this.GetResults().ToList();
+            return this.GetResults()?.ToList();
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace urlql
         /// <returns></returns>
         public virtual async Task<IList<dynamic>> GetObjectsAsync()
         {
-            return (await this.GetResultsAsync()).ToList();
+            return (await this.GetResultsAsync())?.ToList();
         }
 
         /// <summary>
