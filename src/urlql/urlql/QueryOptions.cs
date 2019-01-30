@@ -10,6 +10,8 @@ namespace urlql
     /// </summary>
     public class QueryOptions
     {
+        //private static int _absoluteMaxPageSize = UInt16.MaxValue;
+
         private static int _maxPageSize = Int16.MaxValue;
 
         private static int _pageSize = 100;
@@ -29,6 +31,8 @@ namespace urlql
             "HH:mm:ss.FFFFFFF",
             "HH:mm:ss.FFFFFFFK"
         };
+
+        //public static int AbsoluteMaximuumPageSize { get; set; } = _absoluteMaxPageSize;
 
         /// <summary>
         /// Global Default Maximum Page Size

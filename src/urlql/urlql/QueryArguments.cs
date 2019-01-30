@@ -72,6 +72,43 @@ namespace urlql
         /// </summary>
         public bool HasSelections { get { return (Selections != null && Selections.Any()); } }
 
+        /// <summary>
+        /// ToString
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+            if (HasSelections)
+            {
+                builder.Append(@"select ");
+                builder.Append(string.Join(", ", Selections.Select(s => s.ToString())));
+                builder.Append(@" ");
+            }
+            if (HasFiltering)
+            {
+                builder.Append(@"where ");
+                builder.Append(string.Join(", ", Filtering.Select(s => s.ToString())));
+                builder.Append(@" ");
+            }
+            if (HasGrouping)
+            {
+                builder.Append(@"group by ");
+                builder.Append(string.Join(", ", Grouping.Select(s => s.ToString())));
+                builder.Append(@" ");
+            }
+            if (HasOrdering)
+            {
+                builder.Append(@"order by ");
+                builder.Append(string.Join(", ", Ordering.Select(s => s.ToString())));
+                builder.Append(@" ");
+            }
+            if (HasPaging)
+            {
+                builder.Append($"skip {Paging.Skip} take {Paging.Take}");
+            }
+            return builder.ToString().TrimEnd();
+        }
     }
 }
 
