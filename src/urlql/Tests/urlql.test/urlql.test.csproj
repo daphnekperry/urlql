@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <Authors>Dustin Perry</Authors>
+    <Company>urlql team</Company>
+    <Product>urlql.test</Product>
+    <PackageLicenseUrl>https://github.com/dustinperry/urlql/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/dustinperry/urlql</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/dustinperry/urlql</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>

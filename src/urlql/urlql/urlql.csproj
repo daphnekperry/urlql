@@ -2,6 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Dustin Perry</Authors>
+    <Company>urlql team</Company>
+    <Product>urlql.asp.core</Product>
+    <PackageLicenseUrl>https://github.com/dustinperry/urlql/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/dustinperry/urlql</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/dustinperry/urlql</RepositoryUrl>
+    <RepositoryType></RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
