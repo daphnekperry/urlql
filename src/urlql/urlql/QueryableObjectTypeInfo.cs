@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -8,6 +9,8 @@ namespace urlql
 {
     public class QueryableObjectTypeInfo
     {
+        protected static ConcurrentDictionary<Guid, IDictionary<string, QueryablePropertyTypeInfo>> TypeCache = new ConcurrentDictionary<Guid, IDictionary<string, QueryablePropertyTypeInfo>>();
+
         /// <summary>
         /// CLR Type
         /// </summary>
@@ -22,30 +25,41 @@ namespace urlql
         /// Constructor
         /// </summary>
         /// <param name="objectType"></param>
-        public QueryableObjectTypeInfo(Type objectType)
+        public QueryableObjectTypeInfo(Type objectType, QueryOptions options)
         {
             ClrType = objectType;
-            var props = ClrType.GetProperties();
+            bool cached = TypeCache.TryGetValue(ClrType.GUID, out var typeDef);
 
-            foreach (var p in props)
+            if (cached)
             {
-                var propertyName = p.Name;
-                if (VisibleProperty(p))
-                {
-                    var queryType = QueryablePropertyTypeInfo.GetQueryType(p.PropertyType);
-                    typeDefinitions.Add(propertyName, queryType);
-                }
+                typeDefinitions = typeDef;
             }
-
-            var fields = ClrType.GetFields();
-            foreach (var f in fields)
+            else
             {
-                var propertyName = f.Name;
-                if (VisibleProperty(f))
+                var props = ClrType.GetProperties();
+
+                foreach (var p in props)
                 {
-                    var queryType = QueryablePropertyTypeInfo.GetQueryType(f.DeclaringType);
-                    typeDefinitions.Add(propertyName, queryType);
+                    var propertyName = p.Name;
+                    if (VisibleProperty(p))
+                    {
+                        var queryType = QueryablePropertyTypeInfo.GetQueryType(p.PropertyType);
+                        typeDefinitions.Add(propertyName, queryType);
+                    }
                 }
+
+                var fields = ClrType.GetFields();
+                foreach (var f in fields)
+                {
+                    var propertyName = f.Name;
+                    if (VisibleProperty(f))
+                    {
+                        var queryType = QueryablePropertyTypeInfo.GetQueryType(f.DeclaringType);
+                        typeDefinitions.Add(propertyName, queryType);
+                    }
+                }
+
+                TypeCache.TryAdd(ClrType.GUID, typeDefinitions);
             }
         }
 
@@ -68,7 +82,7 @@ namespace urlql
         {
             var attributes = memberInfo.GetCustomAttributes(false).Select(a => a.GetType().Name);
             // Filter out properties to ignore
-            if (attributes.Where(a => a.ToLowerInvariant().StartsWith("jsonignore")).Any())
+            if (attributes.Where(a => a == "Newtonsoft.Json.JsonIgnoreAttribute").Any())
             {
                 return false;
             }

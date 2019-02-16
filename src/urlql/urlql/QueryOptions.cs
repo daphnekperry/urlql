@@ -10,13 +10,19 @@ namespace urlql
     /// </summary>
     public class QueryOptions
     {
-        //private static int _absoluteMaxPageSize = UInt16.MaxValue;
+        public static readonly int AbsoluteMaxPageSize = UInt16.MaxValue;
 
         private static int _maxPageSize = Int16.MaxValue;
 
         private static int _pageSize = 100;
 
         private static bool _requirePaging = false;
+
+        private static string[] _ignorePropertiesWithAttributeNames = {
+            "System.Runtime.Serialization.IgnoreDataMember",
+            "System.Runtime.Serialization.NonSerialized",
+            "Newtonsoft.Json.JsonIgnoreAttribute",
+        };
 
         private static CultureInfo _CultureInfo = CultureInfo.InvariantCulture;
 
@@ -34,8 +40,6 @@ namespace urlql
             "HH:mm:ss.FFFFFFFK"
         };
 
-        //public static int AbsoluteMaximumPageSize { get; set; } = _absoluteMaxPageSize;
-
         /// <summary>
         /// Global Default Maximum Page Size
         /// </summary>
@@ -45,6 +49,18 @@ namespace urlql
         /// Maximum Page Size
         /// </summary>
         public int MaximumPageSize { get; set; }
+
+
+        /// <summary>
+        /// Global Default Page Size
+        /// </summary>
+        public static int DefaultPageSize { get; set; } = _pageSize;
+
+        /// <summary>
+        /// Page Size
+        /// </summary>
+        public int PageSize { get; set; }
+
 
         /// <summary>
         /// Global Default Require Paging
@@ -58,15 +74,14 @@ namespace urlql
 
 
         /// <summary>
-        /// Global Default Page Size
+        /// Global Ignore Properties with these Attributes
         /// </summary>
-        public static int DefaultPageSize { get; set; } = _pageSize;
+        public static string[] DefaultIgnorePropertiesWithAttributeNames = _ignorePropertiesWithAttributeNames;
 
         /// <summary>
-        /// Page Size
+        /// Ignore Properties with these Attributes
         /// </summary>
-        public int PageSize { get; set; }
-
+        public string[] IgnorePropertiesWithAttributeNames;
 
         /// <summary>
         /// Global Default Culture Info

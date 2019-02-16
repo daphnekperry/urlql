@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "urlql.asp.core", "urlql.asp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3CE1C39B-765C-4646-AD9C-92A7BA7A6F3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "urlql.test", "Tests\urlql.test\urlql.test.csproj", "{1647C987-CEB9-4F0E-B12A-E574541AB692}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "urlql.test", "Tests\urlql.test\urlql.test.csproj", "{1647C987-CEB9-4F0E-B12A-E574541AB692}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "urlql.ef.core", "urlql.ef.core\urlql.ef.core.csproj", "{06BAA0DF-4119-4724-BA37-581F332049FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{1647C987-CEB9-4F0E-B12A-E574541AB692}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1647C987-CEB9-4F0E-B12A-E574541AB692}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1647C987-CEB9-4F0E-B12A-E574541AB692}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06BAA0DF-4119-4724-BA37-581F332049FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06BAA0DF-4119-4724-BA37-581F332049FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06BAA0DF-4119-4724-BA37-581F332049FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06BAA0DF-4119-4724-BA37-581F332049FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

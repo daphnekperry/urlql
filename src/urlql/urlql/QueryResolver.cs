@@ -57,15 +57,15 @@ namespace urlql
         /// <param name="opt"></param>
         public QueryResolver(IQueryable queryable, QueryArguments args, QueryOptions opt = null)
         {
-            sourceQueryable = queryable;
-            typeInfo = new QueryableObjectTypeInfo(queryable.ElementType);
             result = null;
+            sourceQueryable = queryable;
             arguments = args;
             if (opt == null)
             {
                 opt = new QueryOptions();
             }
             options = opt;
+            typeInfo = new QueryableObjectTypeInfo(queryable.ElementType, options);
             validator = new QueryArgumentsValidator(options, typeInfo);
             formatter = new QueryStatementFormatter(options, typeInfo);
         }
@@ -371,14 +371,9 @@ namespace urlql
 
             if (paging != null)
             {
-                if (arguments.Paging.Take > options.MaximumPageSize)
-                {
-                    throw new QueryException($"take: cannot be greater than {options.MaximumPageSize}");
-                }
-
-                int skip = arguments.Paging.Skip;
-                int take = fetchAdditional ? arguments.Paging.Take + 1 : arguments.Paging.Take;
-
+                validator.Validate(paging);
+                int skip = paging.Skip;
+                int take = fetchAdditional ? paging.Take + 1 : paging.Take;
                 query = query.Skip(skip).Take(take);
             }
 

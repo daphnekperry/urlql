@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 // Disable assignment warning for this test object
@@ -48,6 +49,10 @@ namespace urlql.test
         protected double hiddenDouble { get; set; }
 
         private Guid hiddenKey = Guid.NewGuid();
+
+        [IgnoreDataMember]
+        [NonSerialized]
+        public int hiddenByAttributes = 2501;
 
         public static IEnumerable<Foo> MakeFoo(int count = 10)
         {

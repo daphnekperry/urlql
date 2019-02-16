@@ -35,6 +35,15 @@ namespace urlql
             this.typeInfo = typeInfo;
         }
 
+        public bool Validate(Paging statement)
+        {
+            if (options.MaximumPageSize > QueryOptions.AbsoluteMaxPageSize || statement.Take > options.MaximumPageSize)
+            {
+                return false;
+            }
+            return true;
+        }
+
         /// <summary>
         /// Validate an ISelectionStatement against the QueryValidator's QueryableObjectTypeInfo
         /// </summary>
