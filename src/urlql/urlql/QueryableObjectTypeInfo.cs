@@ -41,7 +41,7 @@ namespace urlql
                 foreach (var p in props)
                 {
                     var propertyName = p.Name;
-                    if (VisibleProperty(p))
+                    if (VisibleProperty(p, options.IgnoreAttributeNames))
                     {
                         var queryType = QueryablePropertyTypeInfo.GetQueryType(p.PropertyType);
                         typeDefinitions.Add(propertyName, queryType);
@@ -52,7 +52,7 @@ namespace urlql
                 foreach (var f in fields)
                 {
                     var propertyName = f.Name;
-                    if (VisibleProperty(f))
+                    if (VisibleProperty(f, options.IgnoreAttributeNames))
                     {
                         var queryType = QueryablePropertyTypeInfo.GetQueryType(f.DeclaringType);
                         typeDefinitions.Add(propertyName, queryType);
@@ -78,11 +78,11 @@ namespace urlql
         /// </summary>
         /// <param name="prop"></param>
         /// <returns></returns>
-        protected bool VisibleProperty(MemberInfo memberInfo)
+        protected bool VisibleProperty(MemberInfo memberInfo, string[] ignoreAttributeNames)
         {
-            var attributes = memberInfo.GetCustomAttributes(false).Select(a => a.GetType().Name);
+            var attributeNames  = memberInfo.GetCustomAttributes(false).Select(a => a.GetType().Name).ToList();
             // Filter out properties to ignore
-            if (attributes.Where(a => a == "Newtonsoft.Json.JsonIgnoreAttribute").Any())
+            if (attributeNames.Intersect(ignoreAttributeNames).Any())
             {
                 return false;
             }
