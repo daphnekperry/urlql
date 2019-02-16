@@ -91,7 +91,7 @@ namespace urlql
         public bool Validate(Aggregation aggregation)
         {
             var prop = typeInfo.GetPropertyTypeInfo(aggregation.PropertyName);
-            if (prop == null || (int)prop.PropertyType < (int)QueryablePropertyType.Undefined)
+            if (prop == null || (int)prop.PropertyType < (int)QueryablePropertyType.Any)
             {
                 return false;
             }
@@ -119,6 +119,11 @@ namespace urlql
             return true;
         }
 
+        /// <summary>
+        /// Validate an IGroupingStatement against the QueryValidator's QueryableObjectTypeInfo
+        /// </summary>
+        /// <param name="statement"></param>
+        /// <returns></returns>
         public bool Validate(IGroupingStatement statement)
         {
             var prop = typeInfo.GetPropertyTypeInfo(statement.PropertyName);

@@ -6,7 +6,7 @@ using System.Text;
 namespace urlql
 {
     /// <summary>
-    /// Options used for yielding a query result
+    /// Options used by the Query Resolver for yielding a query result
     /// </summary>
     public class QueryOptions
     {
@@ -15,6 +15,8 @@ namespace urlql
         private static int _maxPageSize = Int16.MaxValue;
 
         private static int _pageSize = 100;
+
+        private static bool _requirePaging = false;
 
         private static CultureInfo _CultureInfo = CultureInfo.InvariantCulture;
 
@@ -32,7 +34,7 @@ namespace urlql
             "HH:mm:ss.FFFFFFFK"
         };
 
-        //public static int AbsoluteMaximuumPageSize { get; set; } = _absoluteMaxPageSize;
+        //public static int AbsoluteMaximumPageSize { get; set; } = _absoluteMaxPageSize;
 
         /// <summary>
         /// Global Default Maximum Page Size
@@ -43,6 +45,16 @@ namespace urlql
         /// Maximum Page Size
         /// </summary>
         public int MaximumPageSize { get; set; }
+
+        /// <summary>
+        /// Global Default Require Paging
+        /// </summary>
+        public static bool DefaultRequirePaging { get; set; } = _requirePaging;
+
+        /// <summary>
+        /// Require Paging
+        /// </summary>
+        public bool RequirePaging { get; set; }
 
 
         /// <summary>
@@ -118,6 +130,7 @@ namespace urlql
         {
             MaximumPageSize = DefaultMaximumPageSize;
             PageSize = DefaultPageSize;
+            RequirePaging = DefaultRequirePaging;
             CultureInfo = DefaultCultureInfo;
             NumberStyles = DefaultNumberStyles;
             DateTimeFormats = DefaultDateTimeFormats;

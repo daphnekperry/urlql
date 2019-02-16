@@ -358,7 +358,18 @@ namespace urlql
         /// <returns></returns>
         protected IQueryable ApplyPaging(IQueryable query, QueryableObjectTypeInfo typeInfo, bool fetchAdditional = false)
         {
+            Paging paging = null;
+
             if (arguments.HasPaging)
+            {
+                paging = arguments.Paging;
+            }
+            if (options.RequirePaging)
+            {
+                paging = new Paging(0, options.PageSize);
+            }
+
+            if (paging != null)
             {
                 if (arguments.Paging.Take > options.MaximumPageSize)
                 {
