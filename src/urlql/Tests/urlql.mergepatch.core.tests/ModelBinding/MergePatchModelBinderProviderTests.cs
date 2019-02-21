@@ -39,31 +39,5 @@ namespace urlql.mergepatch.core.tests.ModelBinding
             Assert.IsNotNull(binder);
         }
     }
-
-    class UsesCache : MergePatchModelBinderProviderTests
-    {
-        protected override void Arrange()
-        {
-            var data = new EmptyModelMetadataProvider();
-            var modelMetadata = data.GetMetadataForType(typeof(MergePatch<Bar>));
-
-            context = Substitute.For<ModelBinderProviderContext>();
-            context.Metadata.Returns(modelMetadata);
-
-            provider = new MergePatchModelBinderProvider();
-        }
-
-        protected override void Act()
-        {
-            binder = provider.GetBinder(context);
-        }
-
-        [Test]
-        public void CachedActivator()
-        {
-            var objectActivator = TypeActivator.GetActivator(typeof(Bar));
-            Assert.IsNotNull(objectActivator);
-        }
-    }
 }
 
