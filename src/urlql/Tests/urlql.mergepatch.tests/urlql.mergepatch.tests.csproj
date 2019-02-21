@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\urlql.mergepatch\urlql.mergepatch.csproj" />
+    <ProjectReference Include="..\..\urlql.mergepatch\urlql.mergepatch.csproj" />
   </ItemGroup>
 
 </Project>
