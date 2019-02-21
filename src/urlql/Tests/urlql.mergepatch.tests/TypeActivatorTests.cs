@@ -20,7 +20,7 @@ namespace urlql.mergepatch.tests
         }
 
         [Test]
-        public void CreatedPatchFoo()
+        public void CachedFoo()
         {
             Assert.IsNotNull(activator);
         }
