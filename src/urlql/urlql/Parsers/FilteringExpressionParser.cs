@@ -25,8 +25,8 @@ namespace urlql.Parsers
             var keywords = new List<string>()
             {
                 LogicalOperation.and.Keyword.ToUpper(),
-                LogicalOperation.or.Keyword.ToLower(),
-                LogicalOperation.and.Keyword.ToUpper(),
+                LogicalOperation.or.Keyword.ToUpper(),
+                LogicalOperation.and.Keyword.ToLower(),
                 LogicalOperation.or.Keyword.ToLower(),
                 AssociationOperation.OpenParenthesis.Keyword,
                 AssociationOperation.CloseParenthesis.Keyword,

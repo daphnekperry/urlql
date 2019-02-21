@@ -14,7 +14,7 @@ namespace urlql
         /// <summary>
         /// Does the object contain any statements.
         /// </summary>
-        public bool HasArguments
+        public virtual bool HasArguments
         {
             get
             {
@@ -40,7 +40,7 @@ namespace urlql
         /// <summary>
         /// Has Filtering Arguments
         /// </summary>
-        public bool HasFiltering { get { return (Filtering != null && Filtering.Any()); } }
+        public bool HasFiltering { get { return (Filtering?.Any() ?? false); } }
 
         /// <summary>
         /// Ordering Properties
@@ -50,7 +50,7 @@ namespace urlql
         /// <summary>
         /// Has Ordering Arguments
         /// </summary>
-        public bool HasOrdering { get { return (Ordering != null && Ordering.Any()); } }
+        public bool HasOrdering { get { return (Ordering?.Any() ?? false); } }
 
         /// <summary>
         /// Grouping Properties
@@ -60,7 +60,7 @@ namespace urlql
         /// <summary>
         /// Has Grouping Arguments
         /// </summary>
-        public bool HasGrouping { get { return (Grouping != null && Grouping.Any()); } }
+        public bool HasGrouping { get { return (Grouping?.Any() ?? false); } }
 
         /// <summary>
         /// Selection Properties
@@ -70,7 +70,7 @@ namespace urlql
         /// <summary>
         /// Has Selection Arguments
         /// </summary>
-        public bool HasSelections { get { return (Selections != null && Selections.Any()); } }
+        public bool HasSelections { get { return (Selections?.Any() ?? false); } }
 
         /// <summary>
         /// ToString
