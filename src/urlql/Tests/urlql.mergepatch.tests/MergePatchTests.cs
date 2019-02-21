@@ -7,6 +7,32 @@ using System.Text;
 
 namespace urlql.mergepatch.tests
 {
+    class MergePatchApply : Specification
+    {
+        protected JObject obj;
+        protected MergePatch<Foo> patch;
+        protected Foo testFoo;
+
+        protected override void Arrange()
+        {
+            testFoo = new Foo();
+            var patchFoo = new Foo() { Id = 42 };
+            obj = JObject.Parse(JsonConvert.SerializeObject(patchFoo));
+            patch = new MergePatch<Foo>(obj);
+        }
+
+        protected override void Act()
+        {
+            patch.Apply(testFoo);
+        }
+
+        [Test]
+        public void ChangedValue()
+        {
+            Assert.AreEqual(testFoo.Id, 42);
+        }
+    }
+
     class MergePatchWrongType : Specification
     {
         protected JObject obj;
@@ -21,7 +47,7 @@ namespace urlql.mergepatch.tests
 
         protected override void Act()
         {
-            isValid = patch.Validate();
+            isValid = patch.IsValid();
         }
 
         [Test]
@@ -45,13 +71,37 @@ namespace urlql.mergepatch.tests
 
         protected override void Act()
         {
-            isValid = patch.Validate();
+            isValid = patch.IsValid();
         }
 
         [Test]
         public void IsValid()
         {
             Assert.IsTrue(isValid);
+        }
+    }
+
+    class MergePatchWrongMemberType : Specification
+    {
+        protected JObject obj;
+        protected MergePatch<Foo> patch;
+        protected bool isValid;
+
+        protected override void Arrange()
+        {
+            obj = JObject.Parse(@"{""Id"":""asdf""}");
+            patch = new MergePatch<Foo>(obj);
+        }
+
+        protected override void Act()
+        {
+            isValid = patch.IsValid();
+        }
+
+        [Test]
+        public void IsNotValid()
+        {
+            Assert.IsFalse(isValid);
         }
     }
 
@@ -69,7 +119,7 @@ namespace urlql.mergepatch.tests
 
         protected override void Act()
         {
-            isValid = patch.Validate();
+            isValid = patch.IsValid();
         }
 
         [Test]
@@ -93,7 +143,7 @@ namespace urlql.mergepatch.tests
 
         protected override void Act()
         {
-            isValid = patch.Validate();
+            isValid = patch.IsValid();
         }
 
         [Test]
