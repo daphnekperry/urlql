@@ -37,7 +37,6 @@ namespace urlql
             else
             {
                 var props = ClrType.GetProperties();
-
                 foreach (var p in props)
                 {
                     var propertyName = p.Name;

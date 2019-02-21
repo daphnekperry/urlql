@@ -5,7 +5,29 @@ using System.Text;
 
 namespace urlql.mergepatch.tests
 {
-    class TypeActivatorTests : Specification
+    class CreatesTypeActivator : Specification
+    {
+        ObjectActivator activator;
+        Foo foo;
+
+        protected override void Arrange()
+        {
+            activator = TypeActivator.GetActivator(typeof(Foo));
+        }
+
+        protected override void Act()
+        {
+            foo = activator() as Foo;
+        }
+
+        [Test]
+        public void CreatedFooInstance()
+        {
+            Assert.IsNotNull(foo);
+        }
+    }
+
+    class UsesCache : Specification
     {
         ObjectActivator activator;
 

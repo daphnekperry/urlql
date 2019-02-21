@@ -14,15 +14,28 @@ namespace urlql.mergepatch
     {
         internal static ConcurrentDictionary<Guid, ObjectActivator> ActivatorCache = new ConcurrentDictionary<Guid, ObjectActivator>();
 
-        public static ObjectActivator GetActivator(Type type)
+        private static ObjectActivator GetDefault<Guid, ObjectActivator>(this ConcurrentDictionary<Guid, ObjectActivator> dictonary, Guid key)
         {
-            var hasActivator = ActivatorCache.TryGetValue(type.GUID, out ObjectActivator activator);
-            if (!hasActivator)
+            var hasValue = dictonary.TryGetValue(key, out ObjectActivator value);
+            return value;
+        }
+
+        public static ObjectActivator GetActivator(Type type, bool? useCache = null)
+        {
+            if (MergePatchOptions.CacheTypeInformation)
             {
-                activator = CreateActivator(type);
-                ActivatorCache.TryAdd(type.GUID, activator);
+                ActivatorCache.TryGetValue(type.GUID, out ObjectActivator activator);
+                if (activator == null)
+                {
+                    activator = TypeActivator.CreateActivator(type);
+                    ActivatorCache.TryAdd(type.GUID, activator);
+                }
+                return activator;
             }
-            return activator;
+            else
+            {
+                return TypeActivator.CreateActivator(type);
+            }
         }
 
         /// <summary>
