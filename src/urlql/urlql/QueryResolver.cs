@@ -87,32 +87,21 @@ namespace urlql
         {
             if (result == null)
             {
-                try
-                {
-                    var query = ApplyArguments();
-                    IList<dynamic> resultObjects = await query.ToDynamicListAsync();
+                var query = ApplyArguments();
+                IList<dynamic> resultObjects = await query.ToDynamicListAsync();
 
-                    if (arguments.HasPaging)
-                    {
-                        bool hasMorePages = (resultObjects.Count > arguments.Paging.Take);
-                        if (hasMorePages)
-                        {
-                            resultObjects.RemoveAt(resultObjects.Count - 1);
-                        }
-                        result = new QueryResult(resultObjects, arguments.Paging, !(hasMorePages));
-                    }
-                    else
-                    {
-                        result = new QueryResult(resultObjects);
-                    }
-                }
-                catch (QueryException ex)
+                if (arguments.HasPaging)
                 {
-                    IList<string> errMsgs = new List<string>()
+                    bool hasMorePages = (resultObjects.Count > arguments.Paging.Take);
+                    if (hasMorePages)
                     {
-                        ex.Message
-                    };
-                    result = new QueryResult(errMsgs);
+                        resultObjects.RemoveAt(resultObjects.Count - 1);
+                    }
+                    result = new QueryResult(resultObjects, arguments.Paging, !(hasMorePages));
+                }
+                else
+                {
+                    result = new QueryResult(resultObjects);
                 }
             }
 

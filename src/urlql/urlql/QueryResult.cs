@@ -39,11 +39,6 @@ namespace urlql
         public bool IsValidResult { get; protected set; }
 
         /// <summary>
-        /// Additional information for the result set (diagnostic, error)
-        /// </summary>
-        public IDictionary<string, IList<string>> Information = new Dictionary<string, IList<string>>();
-
-        /// <summary>
         /// Constructor 
         /// </summary>
         /// <param name="results"></param>
@@ -89,21 +84,6 @@ namespace urlql
             StartRow = paging.Skip;
             var endVal = paging.Skip + (results.Count - 1);
             EndRow = paging.Skip > endVal ? paging.Skip : endVal;
-        }
-
-        /// <summary>
-        /// Error Results Constructor
-        /// </summary>
-        /// <param name="messages"></param>
-        /// <param name="key"></param>
-        public QueryResult(IList<string> messages, string key = "errors")
-        {
-            Information.Add(key, messages);
-            IsValidResult = false;
-            IsPagedResult = false;
-            StartRow = null;
-            EndRow = null;
-            IsLastPage = null;
         }
 
         /// <summary>
