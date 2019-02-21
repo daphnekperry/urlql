@@ -195,7 +195,6 @@ namespace urlql.test.Queries
         public void PageResultsCorrect()
         {
             Assert.AreEqual(results.IsValidResult, true);
-            Assert.AreEqual(results.IsPagedResult, true);
             Assert.AreEqual(results.IsLastPage, false);
 
             var index = arguments.Paging.Skip;

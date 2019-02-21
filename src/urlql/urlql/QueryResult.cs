@@ -29,11 +29,6 @@ namespace urlql
         public bool? IsLastPage { get; protected set; }
 
         /// <summary>
-        /// Is this result paged
-        /// </summary>
-        public bool IsPagedResult { get; protected set; }
-
-        /// <summary>
         /// Is this result valid (did the QueryExecutor fail)
         /// </summary>
         public bool IsValidResult { get; protected set; }
@@ -51,7 +46,6 @@ namespace urlql
             resultList = results;
 
             IsValidResult = true;
-            IsPagedResult = false;
             StartRow = null;
             EndRow = null;
             IsLastPage = null;
@@ -78,7 +72,6 @@ namespace urlql
             resultList = results;
 
             IsValidResult = true;
-            IsPagedResult = true;
             IsLastPage = lastPage;
 
             StartRow = paging.Skip;
@@ -105,7 +98,6 @@ namespace urlql
 
             resultList = newData;
             IsValidResult = original.IsValidResult;
-            IsPagedResult = original.IsPagedResult;
             StartRow = original.StartRow;
             EndRow = original.EndRow;
             IsLastPage = original.IsLastPage;
