@@ -15,6 +15,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "urlql.ef.core", "urlql.ef.c
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "urlql.db", "urlql.db\urlql.db.csproj", "{637BFE30-FAA2-4828-A048-6E1EBA2F17F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "urlql.mergepatch", "urlql.mergepatch\urlql.mergepatch.csproj", "{ED2B66E7-C3D8-41F0-A84D-EE54C53425EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "urlql.mergepatch.core", "urlql.mergepatch.core\urlql.mergepatch.core.csproj", "{1504A31D-110C-42BF-AF58-966AFF0DEBB5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "urlql.mergepatch.core.tests", "Tests\urlql.mergepatch.core.tests\urlql.mergepatch.core.tests.csproj", "{8F6ACD7F-8485-409C-BD71-684C3AEE59BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,12 +47,25 @@ Global
 		{637BFE30-FAA2-4828-A048-6E1EBA2F17F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{637BFE30-FAA2-4828-A048-6E1EBA2F17F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{637BFE30-FAA2-4828-A048-6E1EBA2F17F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED2B66E7-C3D8-41F0-A84D-EE54C53425EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED2B66E7-C3D8-41F0-A84D-EE54C53425EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED2B66E7-C3D8-41F0-A84D-EE54C53425EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED2B66E7-C3D8-41F0-A84D-EE54C53425EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1504A31D-110C-42BF-AF58-966AFF0DEBB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1504A31D-110C-42BF-AF58-966AFF0DEBB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1504A31D-110C-42BF-AF58-966AFF0DEBB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1504A31D-110C-42BF-AF58-966AFF0DEBB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F6ACD7F-8485-409C-BD71-684C3AEE59BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F6ACD7F-8485-409C-BD71-684C3AEE59BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F6ACD7F-8485-409C-BD71-684C3AEE59BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F6ACD7F-8485-409C-BD71-684C3AEE59BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1647C987-CEB9-4F0E-B12A-E574541AB692} = {3CE1C39B-765C-4646-AD9C-92A7BA7A6F3A}
+		{8F6ACD7F-8485-409C-BD71-684C3AEE59BF} = {3CE1C39B-765C-4646-AD9C-92A7BA7A6F3A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E6F3A749-9EA5-4EA7-A70F-D15C266B2736}
