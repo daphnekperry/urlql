@@ -10,7 +10,7 @@ namespace urlql.mergepatch.tests
         public string Name { get; set; }
         public virtual string Description { get; set; }
         private int hidden { get; set; }
-        protected int hiding { get; set; }
+        protected int hiding = 74;
     }
 
     class Bar : Foo

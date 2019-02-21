@@ -73,7 +73,7 @@ namespace urlql.mergepatch.tests
         }
 
         [Test]
-        public void IsValid()
+        public void IsNotValid()
         {
             Assert.IsFalse(isValid);
         }
@@ -97,7 +97,7 @@ namespace urlql.mergepatch.tests
         }
 
         [Test]
-        public void IsValid()
+        public void IsNotValid()
         {
             Assert.IsFalse(isValid);
         }
