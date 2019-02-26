@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace urlql.mergepatch
+namespace urlql
 {
     public class MergePatchOptions
     {

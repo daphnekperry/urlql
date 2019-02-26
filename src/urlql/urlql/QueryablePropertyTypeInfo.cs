@@ -100,11 +100,13 @@ namespace urlql
                     return Numeric;
                 case TypeCode.Object:
                 default:
-                    if (typeToCheck == typeof(System.Guid))
+                    switch (typeToCheck)
                     {
-                        return Guid;
+                        case Type _ when typeToCheck == typeof(System.Guid):
+                            return Guid;
+                        default:
+                            return Object;
                     }
-                    return Object;
             }
         }
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 
-namespace urlql.mergepatch
+namespace urlql
 {
     public class MergePatch<T> : JObject
     {
@@ -62,7 +62,7 @@ namespace urlql.mergepatch
 
             if (!IsValid())
             {
-                return; // TODO: Throw good exception here
+                return;
             }
 
             foreach (var prop in this.Properties())

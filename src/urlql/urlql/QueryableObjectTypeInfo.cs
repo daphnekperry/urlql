@@ -77,11 +77,11 @@ namespace urlql
         /// </summary>
         /// <param name="prop"></param>
         /// <returns></returns>
-        protected bool VisibleProperty(MemberInfo memberInfo, string[] ignoreAttributeNames)
+        protected bool VisibleProperty(MemberInfo memberInfo, string[] ignoreAttributeNames, string[] requiredAttributeNames = null)
         {
             var attributeNames  = memberInfo.GetCustomAttributes(false).Select(a => a.GetType().Name).ToList();
             // Filter out properties to ignore
-            if (attributeNames.Intersect(ignoreAttributeNames).Any())
+            if (attributeNames.Intersect(ignoreAttributeNames).Any() || attributeNames.Except(requiredAttributeNames ?? new List<string>().ToArray()).Count() != attributeNames.Count)
             {
                 return false;
             }
