@@ -1,7 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/dustinperry/urlql</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/dustinperry/urlql</RepositoryUrl>
+    <Authors>Dustin Perry</Authors>
+    <Company>urlql team</Company>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +21,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\urlql.mergepatch\urlql.mergepatch.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

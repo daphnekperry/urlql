@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -8,9 +8,13 @@
     <RepositoryUrl>https://github.com/dustinperry/urlql</RepositoryUrl>
     <RepositoryType></RepositoryType>
     <PackageProjectUrl>https://github.com/dustinperry/urlql</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/dustinperry/urlql/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
     <Copyright></Copyright>
     <Product>urlql.asp.core</Product>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Version>1.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +27,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\urlql\urlql.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
