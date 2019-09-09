@@ -14,7 +14,7 @@ namespace urlql.asp.core.Extensions
             var param = context.ActionDescriptor.Parameters.SingleOrDefault(x => x.Name == parameterName);
             if (param == null || param.ParameterType != parameterType)
             {
-                throw new InvalidOperationException($"{parameterName} is not of type {parameterType.Name} or an argument for within this action.");
+                throw new InvalidOperationException($"{parameterName} is not of type {parameterType.Name} or is not an argument for this action.");
             }
         }
     }

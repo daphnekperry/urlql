@@ -58,7 +58,7 @@ namespace urlql.test.Parsers
         }
 
         [Test]
-        public void HasEqualStatement()
+        public void HasEqualAndStatement()
         {
             Assert.AreEqual(statements.Count(), 3);
 
@@ -97,7 +97,7 @@ namespace urlql.test.Parsers
         }
 
         [Test]
-        public void HasEqualStatement()
+        public void HasEqualOrStatement()
         {
             Assert.AreEqual(statements.Count(), 3);
 

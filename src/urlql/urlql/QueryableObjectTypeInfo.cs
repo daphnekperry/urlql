@@ -9,7 +9,25 @@ namespace urlql
 {
     public class QueryableObjectTypeInfo
     {
-        protected static ConcurrentDictionary<Guid, IDictionary<string, QueryablePropertyTypeInfo>> TypeCache = new ConcurrentDictionary<Guid, IDictionary<string, QueryablePropertyTypeInfo>>();
+        private static ConcurrentDictionary<Guid, IDictionary<string, QueryablePropertyTypeInfo>> _typeCache = new ConcurrentDictionary<Guid, IDictionary<string, QueryablePropertyTypeInfo>>();
+
+        protected ConcurrentDictionary<Guid, IDictionary<string, QueryablePropertyTypeInfo>> TypeCache = _typeCache;
+
+        private static QueryableTypeOptions _typeOptions = new QueryableTypeOptions();
+
+        public static QueryableTypeOptions TypeOptions
+        {
+            get { return _typeOptions; }
+            set
+            {
+                var lockObj = new object();
+                lock (lockObj)
+                {
+                    _typeCache = new ConcurrentDictionary<Guid, IDictionary<string, QueryablePropertyTypeInfo>>();
+                    _typeOptions = value;
+                }
+            }
+        }
 
         /// <summary>
         /// CLR Type
@@ -19,20 +37,20 @@ namespace urlql
         /// <summary>
         /// Property Name and Query Property Type definitions
         /// </summary>
-        protected IDictionary<string, QueryablePropertyTypeInfo> typeDefinitions = new Dictionary<string, QueryablePropertyTypeInfo>();
+        protected IDictionary<string, QueryablePropertyTypeInfo> propertyDefinitions = new Dictionary<string, QueryablePropertyTypeInfo>();
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="objectType"></param>
-        public QueryableObjectTypeInfo(Type objectType, QueryOptions options)
+        public QueryableObjectTypeInfo(Type objectType)
         {
             ClrType = objectType;
-            bool cached = TypeCache.TryGetValue(ClrType.GUID, out var typeDef);
+            bool cached = TypeCache.TryGetValue(ClrType.GUID, out var propertyDefs);
 
             if (cached)
             {
-                typeDefinitions = typeDef;
+                propertyDefinitions = propertyDefs;
             }
             else
             {
@@ -40,10 +58,10 @@ namespace urlql
                 foreach (var p in props)
                 {
                     var propertyName = p.Name;
-                    if (VisibleProperty(p, options.IgnoreAttributeNames))
+                    if (AccessableProperty(p, TypeOptions.ExcludedAttributeNames, TypeOptions.RequiredAttributeNames))
                     {
                         var queryType = QueryablePropertyTypeInfo.GetQueryType(p.PropertyType);
-                        typeDefinitions.Add(propertyName, queryType);
+                        propertyDefinitions.Add(propertyName, queryType);
                     }
                 }
 
@@ -51,14 +69,14 @@ namespace urlql
                 foreach (var f in fields)
                 {
                     var propertyName = f.Name;
-                    if (VisibleProperty(f, options.IgnoreAttributeNames))
+                    if (AccessableProperty(f, TypeOptions.ExcludedAttributeNames, TypeOptions.RequiredAttributeNames))
                     {
                         var queryType = QueryablePropertyTypeInfo.GetQueryType(f.DeclaringType);
-                        typeDefinitions.Add(propertyName, queryType);
+                        propertyDefinitions.Add(propertyName, queryType);
                     }
                 }
 
-                TypeCache.TryAdd(ClrType.GUID, typeDefinitions);
+                TypeCache.TryAdd(ClrType.GUID, propertyDefinitions);
             }
         }
 
@@ -69,7 +87,7 @@ namespace urlql
         /// <returns></returns>
         public QueryablePropertyTypeInfo GetPropertyTypeInfo(string propertyName)
         {
-            return typeDefinitions.Where(d=> d.Key.ToLowerInvariant() == propertyName.ToLowerInvariant()).SingleOrDefault().Value;
+            return propertyDefinitions.Where(d=> d.Key.ToLowerInvariant() == propertyName.ToLowerInvariant()).SingleOrDefault().Value;
         }
 
         /// <summary>
@@ -77,10 +95,10 @@ namespace urlql
         /// </summary>
         /// <param name="prop"></param>
         /// <returns></returns>
-        protected bool VisibleProperty(MemberInfo memberInfo, string[] ignoreAttributeNames, string[] requiredAttributeNames = null)
+        protected bool AccessableProperty(MemberInfo memberInfo, IEnumerable<string> ignoreAttributeNames, IEnumerable<string> requiredAttributeNames = null)
         {
             var attributeNames  = memberInfo.GetCustomAttributes(false).Select(a => a.GetType().Name).ToList();
-            // Filter out properties to ignore
+            // Filter by properties
             if (attributeNames.Intersect(ignoreAttributeNames).Any() || attributeNames.Except(requiredAttributeNames ?? new List<string>().ToArray()).Count() != attributeNames.Count)
             {
                 return false;

@@ -65,7 +65,7 @@ namespace urlql
                 opt = new QueryOptions();
             }
             options = opt;
-            typeInfo = new QueryableObjectTypeInfo(queryable.ElementType, options);
+            typeInfo = new QueryableObjectTypeInfo(queryable.ElementType);
             validator = new QueryArgumentsValidator(options, typeInfo);
             formatter = new QueryStatementFormatter(options, typeInfo);
         }
@@ -167,7 +167,7 @@ namespace urlql
         /// <param name="query"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        protected IQueryable ApplyFiltering(IQueryable query, QueryableObjectTypeInfo type)
+        protected virtual IQueryable ApplyFiltering(IQueryable query, QueryableObjectTypeInfo type)
         {
             if (arguments.HasFiltering)
             {
@@ -192,7 +192,7 @@ namespace urlql
         /// <param name="query"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        protected IQueryable ApplyOrdering(IQueryable query, QueryableObjectTypeInfo type)
+        protected virtual IQueryable ApplyOrdering(IQueryable query, QueryableObjectTypeInfo type)
         {
             if (arguments.HasOrdering)
             {
@@ -231,7 +231,7 @@ namespace urlql
         /// <param name="query"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        protected IQueryable ApplyGrouping(IQueryable query, QueryableObjectTypeInfo type)
+        protected virtual IQueryable ApplyGrouping(IQueryable query, QueryableObjectTypeInfo type)
         {
             if (arguments.HasGrouping)
             {
@@ -270,7 +270,7 @@ namespace urlql
         /// <param name="query"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        protected IQueryable ApplySelections(IQueryable query, QueryableObjectTypeInfo type)
+        protected virtual IQueryable ApplySelections(IQueryable query, QueryableObjectTypeInfo type)
         {
             if (arguments.HasSelections)
             {
@@ -292,7 +292,7 @@ namespace urlql
 
                 if (!arguments.HasGrouping && aggregations.Any() && !selections.Any())
                 {
-                    var dynamicGroupColumnName = $"__urlql_dynamic_group__";
+                    var dynamicGroupColumnName = @"__urlql_dynamic_group__";
                     StringBuilder aggValues = new StringBuilder($"1L as {dynamicGroupColumnName}");
                     foreach (var a in aggregations)
                     {
@@ -345,7 +345,7 @@ namespace urlql
         /// <param name="typeInfo"></param>
         /// <param name="fetchOneMore"></param>
         /// <returns></returns>
-        protected IQueryable ApplyPaging(IQueryable query, QueryableObjectTypeInfo typeInfo, bool fetchAdditional = false)
+        protected virtual IQueryable ApplyPaging(IQueryable query, QueryableObjectTypeInfo typeInfo, bool fetchAdditional = false)
         {
             Paging paging = null;
 

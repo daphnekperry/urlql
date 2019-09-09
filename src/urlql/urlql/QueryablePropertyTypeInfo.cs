@@ -17,17 +17,12 @@ namespace urlql
         /// <summary>
         /// Corresponding CLR Type
         /// </summary>
-        protected readonly Type ClrType;
+        public readonly Type ClrType;
 
         /// <summary>
         /// Operation Type(s)
         /// </summary>
         public readonly QueryablePropertyType PropertyType;
-
-        /// <summary>
-        /// Enumerable Values
-        /// </summary>
-        protected readonly int Value;
 
         /// <summary>
         /// Object Type
@@ -53,8 +48,7 @@ namespace urlql
         /// Guid Type
         /// </summary>
         public static readonly QueryablePropertyTypeInfo Guid = new QueryablePropertyTypeInfo("Guid", QueryablePropertyType.Guid, typeof(Guid));
-
-
+        
         /// <summary>
         /// Constructor
         /// </summary>
@@ -66,7 +60,6 @@ namespace urlql
             TypeName = typeName;
             ClrType = clrType;
             PropertyType = propType;
-            Value = (int)propType;
         }
 
         /// <summary>

@@ -9,14 +9,13 @@ namespace urlql
     public class MergePatch<T> : JObject
     {
         [Newtonsoft.Json.JsonIgnore]
-        public new Type Type { get; protected set; }
+        public new Type Type { get; protected set; } = typeof(T);
 
         public JTokenType JObjectType => base.Type;
 
         public MergePatch(JObject baseObject)
             : base(baseObject)
         {
-            Type = typeof(T);
         }
 
         public bool IsValid()
@@ -35,7 +34,7 @@ namespace urlql
             {
                 try
                 {
-                    // TODO: Cleanup this uglyness and cache type info.
+                    // TODO: Cleanup this uglyness and cache type info.*
                     // TODO: String handling is really permissive on input, we need to do hard checks for string literals and enforce that
                     var x = Type.GetProperties().Where(p => p.SetMethod != null && p.Name.ToLowerInvariant() == prop.Name.ToLowerInvariant()).FirstOrDefault()?.PropertyType ?? Type.GetFields().Where(f => f.IsPublic && f.Name.ToLowerInvariant() == prop.Name.ToLowerInvariant()).FirstOrDefault()?.FieldType;
                     System.Convert.ChangeType(prop.Value.ToString(), x);
@@ -46,8 +45,10 @@ namespace urlql
                 }
             }
 
-            // TODO: Handle value types structs, ignore objects and foreign keys (this can screw up relational Id fields/navigation properties
-            //       or start chucking lots of ugly exceptions at the data access layer for consumers)
+            // TODO: Handle value types structs, ignore objects and foreign keys as this can really
+            //       screw up relational Id fields/navigation properties or at least start chucking
+            //       lots of ugly exceptions at the data access layer for consumers.
+            //       Also consider making optional/opt-in.
             // TODO: Consider member properties such as JsonIgnore, IgnoreDataMember, and NonSerialized
 
             return true;
@@ -55,9 +56,14 @@ namespace urlql
 
         public void Apply(T target)
         {
-            if (target.GetType() != typeof(T))
+            if (target == null)
             {
-                return; // TODO: Throw good exception here
+                throw new ArgumentNullException(nameof(target));
+            }
+
+            if (!target.GetType().IsAssignableFrom(typeof(T)))
+            {
+                throw new ArgumentException($"Cannot apply MergePatch<{typeof(T)}> to target of type {target.GetType()}");
             }
 
             if (!IsValid())

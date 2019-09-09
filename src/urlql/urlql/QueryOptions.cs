@@ -18,12 +18,6 @@ namespace urlql
 
         private static bool _requirePaging = false;
 
-        private static string[] _ignoreAttributeNames = {
-            "System.Runtime.Serialization.IgnoreDataMember",
-            "System.Runtime.Serialization.NonSerialized",
-            "Newtonsoft.Json.JsonIgnoreAttribute",
-        };
-
         private static CultureInfo _CultureInfo = CultureInfo.InvariantCulture;
 
         private static NumberStyles _NumberStyles = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
@@ -72,16 +66,6 @@ namespace urlql
         /// </summary>
         public bool RequirePaging { get; set; }
 
-
-        /// <summary>
-        /// Global Ignore Properties with these Attributes in results
-        /// </summary>
-        public static string[] DefaultIgnoreAttributeNames = _ignoreAttributeNames;
-
-        /// <summary>
-        /// Ignore Properties with these Attributes in results
-        /// </summary>
-        public string[] IgnoreAttributeNames;
 
         /// <summary>
         /// Global Default Culture Info
@@ -146,7 +130,6 @@ namespace urlql
             MaximumPageSize = DefaultMaximumPageSize;
             PageSize = DefaultPageSize;
             RequirePaging = DefaultRequirePaging;
-            IgnoreAttributeNames = DefaultIgnoreAttributeNames;
             CultureInfo = DefaultCultureInfo;
             NumberStyles = DefaultNumberStyles;
             DateTimeFormats = DefaultDateTimeFormats;
