@@ -44,6 +44,7 @@ namespace urlql.Parsers
                 {
                     throw new QueryException(string.Format("order: invalid statement {0}", statement));
                 }
+                orderingProperties.Add(ordering);
             }
 
             return orderingProperties;
