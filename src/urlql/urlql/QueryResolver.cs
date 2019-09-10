@@ -58,7 +58,13 @@ namespace urlql
         public QueryResolver(IQueryable queryable, QueryArguments args, QueryOptions opt = null)
         {
             result = null;
+
+            if (queryable == null)
+            {
+                throw new ArgumentNullException(nameof(queryable));
+            }
             sourceQueryable = queryable;
+
             arguments = args;
             if (opt == null)
             {
@@ -90,7 +96,7 @@ namespace urlql
                 var query = ApplyArguments();
                 IList<dynamic> resultObjects = await query.ToDynamicListAsync();
 
-                if (arguments.HasPaging)
+                if (arguments.HasPaging || options.RequirePaging)
                 {
                     bool hasMorePages = (resultObjects.Count > arguments.Paging.Take);
                     if (hasMorePages)
@@ -355,12 +361,15 @@ namespace urlql
             }
             if (options.RequirePaging)
             {
-                paging = new Paging(0, options.PageSize);
+                paging = arguments.Paging ?? new Paging(0, options.PageSize);
             }
 
             if (paging != null)
             {
-                validator.Validate(paging);
+                if (!validator.Validate(paging))
+                {
+                    throw new QueryException($"paging: invalid page size of {arguments.Paging.Take}");
+                }
                 int skip = paging.Skip;
                 int take = fetchAdditional ? paging.Take + 1 : paging.Take;
                 query = query.Skip(skip).Take(take);
@@ -368,6 +377,5 @@ namespace urlql
 
             return query;
         }
-
     }
 }

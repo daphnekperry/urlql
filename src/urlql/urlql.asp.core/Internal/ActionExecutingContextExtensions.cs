@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace urlql.asp.core.Extensions
+namespace urlql.asp.core.Internal
 {
     internal static class ActionExecutingContextExtensions
     {

@@ -182,19 +182,18 @@ namespace urlql.test.Queries
         {
             //Assert.Brubeck
             Assert.AreEqual(results.Count(), arguments.Paging.Take);
-            Assert.AreEqual(results.EndRow, (arguments.Paging.Take + arguments.Paging.Skip) - 1);
+            Assert.AreEqual(results.EndIndex, (arguments.Paging.Take + arguments.Paging.Skip) - 1);
         }
 
         [Test]
         public void StartedAtFive()
         {
-            Assert.AreEqual(results.StartRow, arguments.Paging.Skip);
+            Assert.AreEqual(results.StartIndex, arguments.Paging.Skip);
         }
 
         [Test]
         public void PageResultsCorrect()
         {
-            Assert.AreEqual(results.IsValidResult, true);
             Assert.AreEqual(results.IsLastPage, false);
 
             var index = arguments.Paging.Skip;

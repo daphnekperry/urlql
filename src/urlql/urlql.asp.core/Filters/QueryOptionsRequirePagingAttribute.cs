@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using urlql.asp.core.Extensions;
+using urlql.asp.core.Internal;
 
 namespace urlql.asp.core.Filters
 {

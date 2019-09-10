@@ -16,22 +16,17 @@ namespace urlql
         /// <summary>
         /// Starting row index (0 based)
         /// </summary>
-        public int? StartRow { get; protected set; }
+        public int? StartIndex { get; protected set; }
 
         /// <summary>
         /// Ending row index (0 based)
         /// </summary>
-        public int? EndRow { get; protected set; }
+        public int? EndIndex { get; protected set; }
 
         /// <summary>
         /// Is this the last page of results
         /// </summary>
         public bool? IsLastPage { get; protected set; }
-
-        /// <summary>
-        /// Is this result valid (did the QueryExecutor fail)
-        /// </summary>
-        public bool IsValidResult { get; protected set; }
 
         /// <summary>
         /// Constructor 
@@ -44,10 +39,8 @@ namespace urlql
                 throw new ArgumentNullException(nameof(results));
             }
             resultList = results;
-
-            IsValidResult = true;
-            StartRow = null;
-            EndRow = null;
+            StartIndex = null;
+            EndIndex = null;
             IsLastPage = null;
         }
 
@@ -70,13 +63,11 @@ namespace urlql
             }
 
             resultList = results;
-
-            IsValidResult = true;
             IsLastPage = lastPage;
 
-            StartRow = paging.Skip;
+            StartIndex = paging.Skip;
             var endVal = paging.Skip + (results.Count - 1);
-            EndRow = paging.Skip > endVal ? paging.Skip : endVal;
+            EndIndex = paging.Skip > endVal ? paging.Skip : endVal;
         }
 
         /// <summary>
@@ -97,9 +88,8 @@ namespace urlql
             }
 
             resultList = newData;
-            IsValidResult = original.IsValidResult;
-            StartRow = original.StartRow;
-            EndRow = original.EndRow;
+            StartIndex = original.StartIndex;
+            EndIndex = original.EndIndex;
             IsLastPage = original.IsLastPage;
         }
 

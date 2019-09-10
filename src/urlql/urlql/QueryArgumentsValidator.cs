@@ -37,7 +37,7 @@ namespace urlql
 
         public bool Validate(Paging statement)
         {
-            if (options.MaximumPageSize > QueryOptions.AbsoluteMaxPageSize || statement.Take > options.MaximumPageSize)
+            if (statement.Take > options.MaximumPageSize)
             {
                 return false;
             }

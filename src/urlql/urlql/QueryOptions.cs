@@ -10,7 +10,11 @@ namespace urlql
     /// </summary>
     public class QueryOptions
     {
+        /// <summary>
+        /// Absolute Maximum Page Size
+        /// </summary>
         public static readonly int AbsoluteMaxPageSize = UInt16.MaxValue;
+        // TODO: throw ArgumentOutOfRangeException when page sizes are set to values larger than this.
 
         private static int _maxPageSize = Int16.MaxValue;
 
