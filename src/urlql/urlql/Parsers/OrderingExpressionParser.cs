@@ -58,7 +58,17 @@ namespace urlql.Parsers
             }
 
             var property = statementTokens.FirstOrDefault();
-            var operation = OrderingOperation.GetOrderingOperationByName(statementTokens.ElementAtOrDefault(1)) ?? OrderingOperation.asc;
+            var operationStatement = statementTokens.ElementAtOrDefault(1);
+            if (string.IsNullOrEmpty(operationStatement))
+            {
+                return new Ordering(property, OrderingOperation.asc);
+            }
+
+            var operation = OrderingOperation.GetOrderingOperationByName(operationStatement);
+            if (operation == null)
+            {
+                return null;
+            }
 
             return new Ordering(property, operation);
         }
