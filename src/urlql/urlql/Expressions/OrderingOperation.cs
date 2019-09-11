@@ -72,6 +72,10 @@ namespace urlql.Expressions
         /// <returns></returns>
         public static OrderingOperation GetOrderingOperationByName(string name)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                return null;
+            }
             var operation = definitions.Where(d => d.Key == name.ToLowerInvariant().Trim()).SingleOrDefault();
             return operation.Value;
         }

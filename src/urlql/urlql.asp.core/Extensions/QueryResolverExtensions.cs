@@ -8,24 +8,34 @@ namespace urlql.asp.core
 {
     public static class QueryResolverExtensions
     {
-        public static QueryResultViewModel GetResultsAsViewModel(this QueryResolver resolver)
+        /// <summary>
+        /// Returns QueryResolver.GetResult() as a QueryResultViewModel
+        /// </summary>
+        /// <param name="resolver"></param>
+        /// <returns></returns>
+        public static QueryResultViewModel GetQueryResultViewModel(this QueryResolver resolver)
         {
             return resolver.GetResults().AsViewModel();
         }
 
-        public async static Task<QueryResultViewModel> GetResultsAsViewModelAsync(this QueryResolver resolver)
+        /// <summary>
+        /// Returns QueryResolver.GetResultAsync() as a QueryResultViewModel
+        /// </summary>
+        /// <param name="resolver"></param>
+        /// <returns></returns>
+        public async static Task<QueryResultViewModel> GetQueryResultViewModelAsync(this QueryResolver resolver)
         {
             return (await resolver.GetResultsAsync()).AsViewModel();
         }
 
         /// <summary>
-        /// Returns the result
+        /// Returns QueryResolver.GetResult() as a QueryResultViewModel within an IActionResult
         /// </summary>
         /// <param name="resolver"></param>
         /// <returns>IActionResult of OkObjectResult containing the a QueryResultViewModel
         /// or IActionResult of BadRequestObjectResult containing an error message
         /// </returns>
-        public static IActionResult GetOkObjectResult(this QueryResolver resolver)
+        public static IActionResult GetIActionResult(this QueryResolver resolver)
         {
             try
             {
@@ -42,13 +52,13 @@ namespace urlql.asp.core
         }
 
         /// <summary>
-        /// Returns the result
+        /// Returns QueryResolver.GetResultAsync() as a QueryResultViewModel within an IActionResult
         /// </summary>
         /// <param name="resolver"></param>
         /// <returns>IActionResult of OkObjectResult containing the a QueryResultViewModel
         /// or IActionResult of BadRequestObjectResult containing an error message
         /// </returns>
-        public async static Task<IActionResult> GetOkObjectResultAsync(this QueryResolver resolver)
+        public async static Task<IActionResult> GetIActionResultAsync(this QueryResolver resolver)
         {
             try
             {
