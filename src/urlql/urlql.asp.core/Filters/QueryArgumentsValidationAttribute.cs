@@ -18,9 +18,13 @@ namespace urlql.asp.core.Filters
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            if (!context.ModelState.IsValid && context.ModelState.Values.Any())
+            if (!context.ModelState.IsValid && context.ModelState.Where(v => v.Key == "QueryArguments" && v.Value.Errors.Any()).Any())
             {
-                context.Result = new BadRequestObjectResult("bad request");
+                var errorMessage = context.ModelState.Where(v => v.Key == "QueryArguments")
+                    .Select(ms => ms.Value)
+                    .SelectMany(e => e.Errors)
+                    .FirstOrDefault()?.ErrorMessage;
+                context.Result = new BadRequestObjectResult(errorMessage);
                 context.HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
             }
         }

@@ -82,6 +82,12 @@ namespace urlql
 
             if (statement is Aggregation a)
             {
+                // Only has an alias, does not operate on a property;
+                if (a.AggregationOperation.OperandCount == 1)
+                {
+                    return true;
+                }
+
                 var prop = typeInfo.GetPropertyTypeInfo(a.PropertyName);
                 if (prop == null)
                 {

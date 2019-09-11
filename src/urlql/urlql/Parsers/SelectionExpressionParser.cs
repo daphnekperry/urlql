@@ -52,7 +52,16 @@ namespace urlql.Parsers
                     selections.Add(new Distinct());
                 }
 
-                var statementObject = GetStatement(statementTokens);
+                ISelectionStatement statementObject = null;
+                try
+                {
+                    statementObject = GetStatement(statementTokens);
+                }
+                catch
+                {
+                    // Poor man's try parse
+                }
+
                 if (statementObject == null)
                 {
                     throw new QueryException(string.Format("select: invalid statement {0}", statement));

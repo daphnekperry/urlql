@@ -36,7 +36,7 @@ namespace urlql.Parsers
             IList<IFilteringStatement> filterStatements = new List<IFilteringStatement>();
             foreach (var statement in statements)
             {
-                var tokens = statement.Tokenize();
+                var tokens = statement.Tokenize().ToList();
                 if (tokens.Count() == 3)
                 {
                     var property = tokens.ElementAtOrDefault(0);
@@ -54,20 +54,63 @@ namespace urlql.Parsers
                         throw new QueryException($"filter: invalid statement {statement}");
                     }
 
+                    if (filterStatements.LastOrDefault() is Comparison)
+                    {
+                        throw new QueryException($"filter: missing logical or associative operator before {statement}");
+                    }
+
                     filterStatements.Add(new Comparison(operation, property, argument));
                 }
                 else if (tokens.Count() == 1 && LogicalOperation.GetLogicalByName(tokens.FirstOrDefault()) != null)
                 {
+                    if (filterStatements.LastOrDefault() is LogicalConnective l)
+                    {
+                        throw new QueryException($"filter: repeated logical operations {l.LogicalOperation.Keyword} {statement}");
+                    }
                     filterStatements.Add(new LogicalConnective(LogicalOperation.GetLogicalByName(tokens.FirstOrDefault())));
                 }
                 else if (tokens.Count() == 1 && AssociationOperation.GetAssociationByName(tokens.FirstOrDefault()) != null)
                 {
-                    filterStatements.Add(new Association(AssociationOperation.GetAssociationByName(tokens.FirstOrDefault())));
+                    var association = new Association(AssociationOperation.GetAssociationByName(tokens.FirstOrDefault()));
+                    if (association.AssociationOperation == AssociationOperation.OpenParenthesis)
+                    {
+                        if ((filterStatements.LastOrDefault() as Association)?.AssociationOperation?.OperationType == AssociationOperationType.CloseParenthesis)
+                        {
+                            throw new QueryException($"filter: missing logical operator before {statement}");
+                        }
+                        if (filterStatements.LastOrDefault() is Comparison)
+                        {
+                            throw new QueryException($"filter: missing logical operator before {statement}");
+                        }
+                    }
+                    if (association.AssociationOperation == AssociationOperation.CloseParenthesis)
+                    {
+                        if ((filterStatements.LastOrDefault() as Association)?.AssociationOperation?.OperationType == AssociationOperationType.OpenParenthesis)
+                        {
+                            throw new QueryException($"filter: missing expression in association {filterStatements.Last()} {statement}");
+                        }
+                        if (filterStatements.LastOrDefault() is LogicalConnective)
+                        {
+                            throw new QueryException($"filter: missing comparison {filterStatements.Last()} {statement}");
+                        }
+                    }
+                    filterStatements.Add(association);
                 }
                 else
                 {
                     throw new QueryException($"filter: invalid statement {statement}");
                 }
+            }
+
+            var openParensCount = filterStatements.OfType<Association>().Where(a => a.AssociationOperation.OperationType == AssociationOperationType.OpenParenthesis).Count();
+            var closeParensCount = filterStatements.OfType<Association>().Where(a => a.AssociationOperation.OperationType == AssociationOperationType.CloseParenthesis).Count();
+            if (openParensCount > closeParensCount)
+            {
+                throw new QueryException($"filter: missing ')'");
+            }
+            if (openParensCount < closeParensCount)
+            {
+                throw new QueryException($"filter: missing '('");
             }
 
             return filterStatements;
@@ -88,6 +131,10 @@ namespace urlql.Parsers
                         outputTokens.Add(t);
                         builder = new StringBuilder();
                         continue;
+                    }
+                    else
+                    {
+                        outputTokens.Add(t);
                     }
                 }
                 else

@@ -20,7 +20,7 @@ namespace urlql
 
         private static int _pageSize = 100;
 
-        private static bool _requirePaging = false;
+        private static bool _requirePaging = true;
 
         private static CultureInfo _CultureInfo = CultureInfo.InvariantCulture;
 

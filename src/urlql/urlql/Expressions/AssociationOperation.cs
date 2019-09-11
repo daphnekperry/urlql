@@ -80,5 +80,10 @@ namespace urlql.Expressions
             var operation = definitions.Where(d => d.Value.OperationType == type).SingleOrDefault();
             return operation.Value;
         }
+
+        public override string ToString()
+        {
+            return Expression;
+        }
     }
 }

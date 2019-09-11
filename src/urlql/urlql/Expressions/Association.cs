@@ -10,7 +10,7 @@ namespace urlql.Expressions
 
         public Association(AssociationOperation operation)
         {
-            AssociationOperation = AssociationOperation;
+            AssociationOperation = operation;
         }
 
         public override string ToString()

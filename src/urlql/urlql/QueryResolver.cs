@@ -57,23 +57,19 @@ namespace urlql
         /// <param name="opt"></param>
         public QueryResolver(IQueryable queryable, QueryArguments args, QueryOptions opt = null)
         {
-            result = null;
-
             if (queryable == null)
             {
                 throw new ArgumentNullException(nameof(queryable));
             }
             sourceQueryable = queryable;
 
-            arguments = args;
-            if (opt == null)
-            {
-                opt = new QueryOptions();
-            }
-            options = opt;
+            result = null;
+            arguments = args ?? new QueryArguments();
+            options = opt ?? new QueryOptions();
             typeInfo = new QueryableObjectTypeInfo(queryable.ElementType);
             validator = new QueryArgumentsValidator(options, typeInfo);
             formatter = new QueryStatementFormatter(options, typeInfo);
+            this.ApplyOptionsToArguments();
         }
 
         /// <summary>
@@ -96,7 +92,7 @@ namespace urlql
                 var query = ApplyArguments();
                 IList<dynamic> resultObjects = await query.ToDynamicListAsync();
 
-                if (arguments.HasPaging || options.RequirePaging)
+                if (arguments.HasPaging)
                 {
                     bool hasMorePages = (resultObjects.Count > arguments.Paging.Take);
                     if (hasMorePages)
@@ -114,23 +110,6 @@ namespace urlql
             return result;
         }
 
-        /// <summary>
-        /// Apply the Query Arguments and return a list of objects
-        /// </summary>
-        /// <returns></returns>
-        public virtual IList<dynamic> GetObjects()
-        {
-            return this.GetResults()?.ToList();
-        }
-
-        /// <summary>
-        /// Apply the Query Arguments and return a list of objects asynchronously
-        /// </summary>
-        /// <returns></returns>
-        public virtual async Task<IList<dynamic>> GetObjectsAsync()
-        {
-            return (await this.GetResultsAsync())?.ToList();
-        }
 
         /// <summary>
         /// Apply the Query Arguments in the correct order
@@ -293,19 +272,17 @@ namespace urlql
 
                 if (!arguments.HasGrouping && aggregations.Any() && selections.Any())
                 {
-                    throw new QueryException($"group: must include {selections.FirstOrDefault()?.Alias.NewName} from 'select' statment");
+                    throw new QueryException("select: missing 'group' statement");
+                    //throw new QueryException($"group: must include {aggregations.FirstOrDefault()?.Alias?.NewName ?? selections.FirstOrDefault()?.PropertyName } from 'select' statment");
                 }
 
                 if (!arguments.HasGrouping && aggregations.Any() && !selections.Any())
                 {
                     var dynamicGroupColumnName = @"__urlql_dynamic_group__";
                     StringBuilder aggValues = new StringBuilder($"1L as {dynamicGroupColumnName}");
-                    foreach (var a in aggregations)
+                    foreach (var name in aggregations.Where(a => a.AggregationOperation.OperandCount != 1).Select(a => a.PropertyName).Distinct())
                     {
-                        if (a.AggregationOperation.Name != AggregationOperation.cnt.Name)
-                        {
-                            aggValues.Append($", it.{a.PropertyName}");
-                        }
+                        aggValues.Append($", it.{name}");
                     }
                     var groupObjectForScalarCalc = $"new ( {aggValues.ToString()} )";
                     query = query.Select(groupObjectForScalarCalc);
@@ -353,17 +330,7 @@ namespace urlql
         /// <returns></returns>
         protected virtual IQueryable ApplyPaging(IQueryable query, QueryableObjectTypeInfo typeInfo, bool fetchAdditional = false)
         {
-            Paging paging = null;
-
-            if (arguments.HasPaging)
-            {
-                paging = arguments.Paging;
-            }
-            if (options.RequirePaging)
-            {
-                paging = arguments.Paging ?? new Paging(0, options.PageSize);
-            }
-
+            var paging = arguments.Paging;
             if (paging != null)
             {
                 if (!validator.Validate(paging))
@@ -376,6 +343,17 @@ namespace urlql
             }
 
             return query;
+        }
+
+        /// <summary>
+        /// Apply Options to they 
+        /// </summary>
+        protected virtual void ApplyOptionsToArguments()
+        {
+            if (options.RequirePaging && arguments.Paging == null)
+            {
+                arguments.Paging = new Paging(0, options.PageSize);
+            }
         }
     }
 }

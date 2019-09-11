@@ -24,7 +24,7 @@ namespace urlql.asp.core.Filters
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var queryOptions = context.ActionArguments.Where(aa => aa.Value.GetType() == typeof(QueryOptions));
+            var queryOptions = context.ActionArguments.Where(aa => aa.Value?.GetType() == typeof(QueryOptions)).ToList();
             foreach (var o in queryOptions)
             {
                 var options = o.Value as QueryOptions ?? new QueryOptions();

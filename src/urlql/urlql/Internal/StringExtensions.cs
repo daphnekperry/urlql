@@ -16,7 +16,8 @@ namespace urlql.Internal
         /// <param name="str"></param>
         public static IEnumerable<string> Tokenize(this string str)
         {
-            return Regex.Split(str.Trim(), StringLiteralRegex).Where(s => !string.IsNullOrEmpty(s.Trim())).Select(s => s.Trim());
+            var preped = str.Replace("(", " ( ").Replace(")", " ) ").Trim();
+            return Regex.Split(preped, StringLiteralRegex).Where(s => !string.IsNullOrEmpty(s.Trim())).Select(s => s.Trim());
         }
     }
 }

@@ -24,14 +24,15 @@ namespace urlql.asp.core.Filters
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var keys = context.ActionArguments.Where(aa => aa.Value.GetType() == typeof(QueryOptions)).Select(a => a.Key);
-            foreach (var k in keys)
+            var queryOptions = context.ActionArguments.Where(aa => aa.Value?.GetType() == typeof(QueryOptions)).ToList();
+            foreach (var o in queryOptions)
             {
-                var options = context.ActionArguments[k] as QueryOptions ?? new QueryOptions();
+                var options = o.Value as QueryOptions;
                 options.RequirePaging = requirePaging;
-                context.ActionArguments[k] = options;
+                context.ActionArguments[o.Key] = options;
             }
             return;
         }
+
     }
 }

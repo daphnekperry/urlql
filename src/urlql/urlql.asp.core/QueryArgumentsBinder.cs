@@ -96,15 +96,17 @@ namespace urlql.asp.core
                 }
 
                 // must be integers
-                bool isValidSkip = int.TryParse(parameters.Where(x => x.Key?.ToLowerInvariant() == @"skip").FirstOrDefault().Value, out int skip);
+                var skipExpression = parameters.Where(x => x.Key?.ToLowerInvariant() == @"skip").FirstOrDefault().Value;
+                bool isValidSkip = int.TryParse(skipExpression, out int skip);
                 if (hasSkip && !isValidSkip)
                 {
-                    throw new QueryException("skip: invalid statement");
+                    throw new QueryException($"skip: invalid statement {skipExpression}");
                 }
-                bool isValidTake = int.TryParse(parameters.Where(x => x.Key?.ToLowerInvariant() == @"take").FirstOrDefault().Value, out int take);
+                var takeExpression = parameters.Where(x => x.Key?.ToLowerInvariant() == @"take").FirstOrDefault().Value;
+                bool isValidTake = int.TryParse(takeExpression, out int take);
                 if (hasTake && !isValidTake)
                 {
-                    throw new QueryException("take: invalid statement");
+                    throw new QueryException($"take: invalid statement {takeExpression}");
                 }
 
                 if (hasSkip && isValidSkip && hasTake && isValidTake)

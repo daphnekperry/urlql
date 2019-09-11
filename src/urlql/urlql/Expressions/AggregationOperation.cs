@@ -53,19 +53,19 @@ namespace urlql.Expressions
         /// <summary>
         /// Minimum
         /// </summary>
-        public static readonly AggregationOperation min = new AggregationOperation("min", AggregationOperationType.Minimum, "Min(it.{0}) as {1}", 2, QueryablePropertyType.Numeric);
+        public static readonly AggregationOperation min = new AggregationOperation("min", AggregationOperationType.Minimum, "it.Min({0}) as {1}", 2, QueryablePropertyType.Numeric);
         /// <summary>
         /// Maximum
         /// </summary>
-        public static readonly AggregationOperation max = new AggregationOperation("max", AggregationOperationType.Maximum, "Max(it.{0}) as {1}", 2, QueryablePropertyType.Numeric);
+        public static readonly AggregationOperation max = new AggregationOperation("max", AggregationOperationType.Maximum, "it.Max({0}) as {1}", 2, QueryablePropertyType.Numeric);
         /// <summary>
         /// Average
         /// </summary>
-        public static readonly AggregationOperation avg = new AggregationOperation("avg", AggregationOperationType.Average, "Average(it.{0}) as {1}", 2, QueryablePropertyType.Numeric);
+        public static readonly AggregationOperation avg = new AggregationOperation("avg", AggregationOperationType.Average, "it.Average({0}) as {1}", 2, QueryablePropertyType.Numeric);
         /// <summary>
         /// Summation
         /// </summary>
-        public static readonly AggregationOperation sum = new AggregationOperation("sum", AggregationOperationType.Sum, "Sum(it.{0}) as {1}", 2, QueryablePropertyType.Numeric);
+        public static readonly AggregationOperation sum = new AggregationOperation("sum", AggregationOperationType.Sum, "it.Sum({0}) as {1}", 2, QueryablePropertyType.Numeric);
 
         /// <summary>
         /// Operation definitions for Expression/Statement parsing
