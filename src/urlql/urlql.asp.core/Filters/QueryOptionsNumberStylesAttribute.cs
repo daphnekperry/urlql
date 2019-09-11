@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using urlql.asp.core.Internal;
 
@@ -10,11 +11,6 @@ namespace urlql.asp.core.Filters
     public class QueryOptionsNumberStylesAttribute : ActionFilterAttribute
     {
         /// <summary>
-        /// QueryArgument action argument name
-        /// </summary>
-        protected string actionArgumentName { get; set; }
-
-        /// <summary>
         /// Query Options Number Styles
         /// </summary>
         protected NumberStyles numberStyles { get; set; }
@@ -22,22 +18,20 @@ namespace urlql.asp.core.Filters
         /// <summary>
         /// Constructor
         /// </summary>
-        public QueryOptionsNumberStylesAttribute(string actionArgumentName, NumberStyles numberStyles)
+        public QueryOptionsNumberStylesAttribute(NumberStyles numberStyles)
         {
-            if (string.IsNullOrEmpty(actionArgumentName))
-            {
-                throw new ArgumentNullException(nameof(actionArgumentName));
-            }
-            this.actionArgumentName = actionArgumentName;
             this.numberStyles = numberStyles;
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            context.ValidateParameter(actionArgumentName, typeof(QueryOptions));
-            var options = (context.ActionArguments[actionArgumentName] as QueryOptions) ?? new QueryOptions();
-            options.NumberStyles = numberStyles;
-            context.ActionArguments[actionArgumentName] = options;
+            var queryOptions = context.ActionArguments.Where(aa => aa.Value.GetType() == typeof(QueryOptions));
+            foreach (var o in queryOptions)
+            {
+                var options = o.Value as QueryOptions ?? new QueryOptions();
+                options.NumberStyles = numberStyles;
+                context.ActionArguments[o.Key] = options;
+            }
             return;
         }
     }

@@ -10,11 +10,6 @@ namespace urlql.asp.core.Filters
     public class QueryOptionsMaximumPageSizeAttribute : ActionFilterAttribute
     {
         /// <summary>
-        /// QueryArgument action argument name
-        /// </summary>
-        protected string actionArgumentName { get; set; }
-
-        /// <summary>
         /// Query Options Maximum Page Size
         /// </summary>
         protected int maximumPageSize { get; set; }
@@ -22,22 +17,20 @@ namespace urlql.asp.core.Filters
         /// <summary>
         /// Constructor
         /// </summary>
-        public QueryOptionsMaximumPageSizeAttribute(string actionArgumentName, int maximumPageSize)
+        public QueryOptionsMaximumPageSizeAttribute(int maximumPageSize)
         {
-            if (string.IsNullOrEmpty(actionArgumentName))
-            {
-                throw new ArgumentNullException(nameof(actionArgumentName));
-            }
-            this.actionArgumentName = actionArgumentName;
             this.maximumPageSize = maximumPageSize;
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            context.ValidateParameter(actionArgumentName, typeof(QueryOptions));
-            var options = (context.ActionArguments[actionArgumentName] as QueryOptions) ?? new QueryOptions();
-            options.MaximumPageSize = maximumPageSize;
-            context.ActionArguments[actionArgumentName] = options;
+            var queryOptions = context.ActionArguments.Where(aa => aa.Value.GetType() == typeof(QueryOptions));
+            foreach (var o in queryOptions)
+            {
+                var options = o.Value as QueryOptions ?? new QueryOptions();
+                options.MaximumPageSize = maximumPageSize;
+                context.ActionArguments[o.Key] = options;
+            }
             return;
         }
 

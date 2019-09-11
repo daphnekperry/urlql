@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using urlql.asp.core.Internal;
 
@@ -10,11 +11,6 @@ namespace urlql.asp.core.Filters
     public class QueryOptionsCultureInfoAttribute : ActionFilterAttribute
     {
         /// <summary>
-        /// QueryArgument action argument name
-        /// </summary>
-        protected string actionArgumentName { get; set; }
-
-        /// <summary>
         /// Query Options Culture Info
         /// </summary>
         protected CultureInfo cultureInfo { get; set; }
@@ -22,22 +18,20 @@ namespace urlql.asp.core.Filters
         /// <summary>
         /// Constructor
         /// </summary>
-        public QueryOptionsCultureInfoAttribute(string actionArgumentName, CultureInfo cultureInfo)
+        public QueryOptionsCultureInfoAttribute(CultureInfo cultureInfo)
         {
-            if (string.IsNullOrEmpty(actionArgumentName))
-            {
-                throw new ArgumentNullException(nameof(actionArgumentName));
-            }
-            this.actionArgumentName = actionArgumentName;
             this.cultureInfo = cultureInfo;
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            context.ValidateParameter(actionArgumentName, typeof(QueryOptions));
-            var options = (context.ActionArguments[actionArgumentName] as QueryOptions) ?? new QueryOptions();
-            options.CultureInfo = cultureInfo;
-            context.ActionArguments[actionArgumentName] = options;
+            var queryOptions = context.ActionArguments.Where(aa => aa.Value.GetType() == typeof(QueryOptions));
+            foreach (var o in queryOptions)
+            {
+                var options = o.Value as QueryOptions ?? new QueryOptions();
+                options.CultureInfo = cultureInfo;
+                context.ActionArguments[o.Key] = options;
+            }
             return;
         }
     }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using urlql.asp.core.Internal;
 
@@ -10,11 +11,6 @@ namespace urlql.asp.core.Filters
     public class QueryOptionsDateTimeStylesAttribute : ActionFilterAttribute
     {
         /// <summary>
-        /// QueryArgument action argument name
-        /// </summary>
-        protected string actionArgumentName { get; set; }
-
-        /// <summary>
         /// Query Options Date Time Styles
         /// </summary>
         protected DateTimeStyles dateTimeStyles { get; set; }
@@ -22,22 +18,20 @@ namespace urlql.asp.core.Filters
         /// <summary>
         /// Constructor
         /// </summary>
-        public QueryOptionsDateTimeStylesAttribute(string actionArgumentName, DateTimeStyles dateTimeStyles)
+        public QueryOptionsDateTimeStylesAttribute(DateTimeStyles dateTimeStyles)
         {
-            if (string.IsNullOrEmpty(actionArgumentName))
-            {
-                throw new ArgumentNullException(nameof(actionArgumentName));
-            }
-            this.actionArgumentName = actionArgumentName;
             this.dateTimeStyles = dateTimeStyles;
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            context.ValidateParameter(actionArgumentName, typeof(QueryOptions));
-            var options = (context.ActionArguments[actionArgumentName] as QueryOptions) ?? new QueryOptions();
-            options.DateTimeStyles = dateTimeStyles;
-            context.ActionArguments[actionArgumentName] = options;
+            var queryOptions = context.ActionArguments.Where(aa => aa.Value.GetType() == typeof(QueryOptions));
+            foreach (var o in queryOptions)
+            {
+                var options = o.Value as QueryOptions ?? new QueryOptions();
+                options.DateTimeStyles = dateTimeStyles;
+                context.ActionArguments[o.Key] = options;
+            }
             return;
         }
     }
