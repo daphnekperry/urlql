@@ -52,6 +52,7 @@ Query String keyword(s):
 ?skip={value}&take={value}
 
 In most cases, skip and take are optional values but when provided must be provided together, you cannot skip without a take and vice versa.
+
 |Keyword|Usage|
 |--|--|
 |Skip|Start index (0 based) from where to pull pages|
@@ -104,6 +105,7 @@ Parenthesis can be used to create complex conditional expressions or sub-express
 ```
 
 The following keywords can be used in constructing a filtering expression.
+
 |Keyword|Description|
 |--|--|
 |eq|equals|
