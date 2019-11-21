@@ -1,5 +1,6 @@
 # urlql
 
+Putting the query back in query string.
 REsT.. for the rest of us.
 
 Setup (the simple version)
