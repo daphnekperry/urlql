@@ -105,7 +105,9 @@ namespace urlql.test.Queries
             base.Arrange();
             options = new QueryOptions();
             arguments = new QueryArguments();
-            arguments.Selections = new List<ISelectionStatement>() { new Aggregation(AggregationOperation.max, "id", new Alias("id", "maxId")) };
+            arguments.Selections = new List<ISelectionStatement>() { new Aggregation(AggregationOperation.max, "id", new Alias("id", "maxId")),
+                                                                     new Aggregation(AggregationOperation.min, "id", new Alias("id", "minId")),
+                                                                     new Aggregation(AggregationOperation.sum, "id", new Alias("id", "sumId")) };
             query = new QueryResolver(objects.AsQueryable(), arguments, options);
         }
 
@@ -120,7 +122,8 @@ namespace urlql.test.Queries
             Assert.AreEqual(results.Count(), 1);
             dynamic r = results.FirstOrDefault();
             Assert.AreEqual(r.maxId, 41);
-
+            Assert.AreEqual(r.minId, 0);
+            Assert.AreEqual(r.sumId, 861);
         }
     }
 
