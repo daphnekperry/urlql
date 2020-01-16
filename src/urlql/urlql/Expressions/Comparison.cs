@@ -62,5 +62,10 @@ namespace urlql.Expressions
             argument = formatter.FormatValue(this);
             return string.Format(ComparisonOperation.Expression, LeftOperand, argument);
         }
+
+        public string ToExpression()
+        {
+            return $"{this.LeftOperand} {this.ComparisonOperation.Keyword} {this.RightOperand}";
+        }
     }
 }

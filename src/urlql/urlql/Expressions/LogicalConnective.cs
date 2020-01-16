@@ -22,5 +22,10 @@ namespace urlql.Expressions
         {
             return this.ToString();
         }
+
+        public string ToExpression()
+        {
+            return this.LogicalOperation.Keyword;
+        }
     }
 }

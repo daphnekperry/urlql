@@ -165,7 +165,7 @@ namespace urlql.Expressions
         /// <param name="operationName"></param>
         protected ComparisonOperation(string keyword, ComparisonOperationType type, string expression, bool isCaseSensitive, QueryablePropertyType propertyType)
         {
-            Keyword = Keyword;
+            Keyword = keyword;
             OperationType = type;
             Expression = expression;
             Name = Enumerations.GetEnumDescription(type);

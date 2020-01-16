@@ -160,7 +160,7 @@ namespace urlql
                 {
                     if (!validator.Validate(a))
                     {
-                        throw new QueryException($"filter: invalid expression {a}");
+                        throw new QueryException($"filter: invalid expression {a.ToExpression()}");
                     }
                 }
 

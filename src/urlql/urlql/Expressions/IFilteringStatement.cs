@@ -7,5 +7,7 @@ namespace urlql.Expressions
     public interface IFilteringStatement : IStatement
     {
         string ToString(QueryStatementFormatter formatter);
+
+        string ToExpression();
     }
 }

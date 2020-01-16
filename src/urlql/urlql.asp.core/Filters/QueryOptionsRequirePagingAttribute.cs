@@ -17,7 +17,7 @@ namespace urlql.asp.core.Filters
         /// <summary>
         /// Constructor
         /// </summary>
-        public QueryOptionsRequirePagingAttribute(bool requirePaging)
+        public QueryOptionsRequirePagingAttribute(bool requirePaging = true)
         {
             this.requirePaging = requirePaging;
         }
