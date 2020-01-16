@@ -12,7 +12,7 @@ namespace urlql.asp.core
         /// Returns QueryResolver.GetResult() as a QueryResultViewModel
         /// </summary>
         /// <param name="resolver"></param>
-        /// <returns></returns>
+        /// <returns>QueryResultViewModel</returns>
         public static QueryResultViewModel GetQueryResultViewModel(this QueryResolver resolver)
         {
             return resolver.GetResults().AsViewModel();
@@ -22,7 +22,7 @@ namespace urlql.asp.core
         /// Returns QueryResolver.GetResultAsync() as a QueryResultViewModel
         /// </summary>
         /// <param name="resolver"></param>
-        /// <returns></returns>
+        /// <returns>QueryResultViewModel</returns>
         public async static Task<QueryResultViewModel> GetQueryResultViewModelAsync(this QueryResolver resolver)
         {
             return (await resolver.GetResultsAsync()).AsViewModel();
