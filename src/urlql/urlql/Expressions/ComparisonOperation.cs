@@ -98,32 +98,32 @@ namespace urlql.Expressions
         /// <summary>
         /// Equals Case Insensitive Text
         /// </summary>
-        public static readonly ComparisonOperation ieq = new ComparisonOperation("ieq", ComparisonOperationType.EqualCI, "it.{0}.ToLower() == {1}", true, QueryablePropertyType.Text);
+        public static readonly ComparisonOperation ieq = new ComparisonOperation("ieq", ComparisonOperationType.EqualCI, "it.{0}.ToLower() == {1}", false, QueryablePropertyType.Text);
         
         /// <summary>
         /// Not Equals Case Insensitive Text
         /// </summary>
-        public static readonly ComparisonOperation ine = new ComparisonOperation("ine", ComparisonOperationType.NotEqualCI, "it.{0}.ToLower() != {1}", true, QueryablePropertyType.Text);
+        public static readonly ComparisonOperation ine = new ComparisonOperation("ine", ComparisonOperationType.NotEqualCI, "it.{0}.ToLower() != {1}", false, QueryablePropertyType.Text);
         
         /// <summary>
         /// Contains Case Insensitive Text
         /// </summary>
-        public static readonly ComparisonOperation icn = new ComparisonOperation("icn", ComparisonOperationType.ContainsTextCI, "it.{0}.ToLower().Contains({1})", true, QueryablePropertyType.Text);
+        public static readonly ComparisonOperation icn = new ComparisonOperation("icn", ComparisonOperationType.ContainsTextCI, "it.{0}.ToLower().Contains({1})", false, QueryablePropertyType.Text);
         
         /// <summary>
         /// Does Not Contain Case Insensitive Text
         /// </summary>
-        public static readonly ComparisonOperation inc = new ComparisonOperation("inc", ComparisonOperationType.DoesNotContainTextCI, "!(it.{0}.ToLower().Contains({1}))", true, QueryablePropertyType.Text);
+        public static readonly ComparisonOperation inc = new ComparisonOperation("inc", ComparisonOperationType.DoesNotContainTextCI, "!(it.{0}.ToLower().Contains({1}))", false, QueryablePropertyType.Text);
         
         /// <summary>
         /// Starts With Case Insensitive Text
         /// </summary>
-        public static readonly ComparisonOperation ist = new ComparisonOperation("ist", ComparisonOperationType.StartsWithTextCI, "it.{0}.ToLower().StartsWith({1})", true, QueryablePropertyType.Text);
+        public static readonly ComparisonOperation ist = new ComparisonOperation("ist", ComparisonOperationType.StartsWithTextCI, "it.{0}.ToLower().StartsWith({1})", false, QueryablePropertyType.Text);
         
         /// <summary>
         /// Ends With Case Insensitive Text
         /// </summary>
-        public static readonly ComparisonOperation ied = new ComparisonOperation("ied", ComparisonOperationType.EndsWithTextCI, "it.{0}.ToLower().EndsWith({1})", true, QueryablePropertyType.Text);
+        public static readonly ComparisonOperation ied = new ComparisonOperation("ied", ComparisonOperationType.EndsWithTextCI, "it.{0}.ToLower().EndsWith({1})", false, QueryablePropertyType.Text);
 
         /// <summary>
         /// Operation definitions for Expression/Statement parsing

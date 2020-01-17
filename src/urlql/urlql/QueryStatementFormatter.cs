@@ -63,7 +63,7 @@ namespace urlql
                     case QueryablePropertyType.Guid:
                         return string.Format($"Guid.Parse(\"{c.RightOperand}\")");
                     default:
-                        return c.ComparisonOperation.IsCaseSensitive ? c.RightOperand : c.RightOperand.ToLower();
+                        return c.ComparisonOperation.IsCaseSensitive ? c.RightOperand : c.RightOperand.ToLower(options.CultureInfo);
                 }
             }
             return statement.ToString();

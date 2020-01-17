@@ -22,7 +22,7 @@ namespace urlql
 
         private static bool _requirePaging = true;
 
-        private static CultureInfo _CultureInfo = CultureInfo.InvariantCulture;
+        private static CultureInfo _CultureInfo = CultureInfo.InvariantCulture; // Culture for the backing store/database.
 
         private static NumberStyles _NumberStyles = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
 
