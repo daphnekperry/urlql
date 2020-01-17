@@ -58,8 +58,7 @@ namespace urlql.Expressions
         /// <returns></returns>
         public virtual string ToString(QueryStatementFormatter formatter)
         {
-            var argument = ComparisonOperation.IsCaseSensitive ? RightOperand : RightOperand.ToLower();
-            argument = formatter.FormatValue(this);
+            var argument = formatter.FormatValue(this);
             return string.Format(ComparisonOperation.Expression, LeftOperand, argument);
         }
 
