@@ -10,6 +10,7 @@ namespace urlql
         private static string[] _excludedAttributeNames = {
             "System.Runtime.Serialization.IgnoreDataMember",
             "System.Runtime.Serialization.NonSerialized",
+            "System.Text.Json.Serialization.JsonIgnoreAttribute",
             "Newtonsoft.Json.JsonIgnoreAttribute",
         };
 
