@@ -86,7 +86,8 @@ namespace urlql.Parsers
 
         protected ISelectionStatement GetStatement(IEnumerable<string> statementTokens)
         {
-            if (statementTokens.Count() == 2 || statementTokens.Count() > 4)
+            var stmtCount = statementTokens.Count();
+            if (stmtCount == 2 || stmtCount > 4)
             {
                 return null;
             }
@@ -102,15 +103,22 @@ namespace urlql.Parsers
                 }
 
                 var operation = AggregationOperation.GetAggregationByName(nameOrOper);
-                if (operation.OperationType == AggregationOperationType.Count && statementTokens.Count() == 3)
+                if (operation.OperationType == AggregationOperationType.Count && stmtCount == 3)
                 {
                     return new Aggregation(operation, statementTokens.ElementAtOrDefault(0), alias);
                 }
-                else if (statementTokens.Count() == 4)
+                else if (stmtCount == 4)
                 {
                     return new Aggregation(operation, statementTokens.ElementAtOrDefault(1), alias);
                 }
                 else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                if (stmtCount == 3 && alias == null)
                 {
                     return null;
                 }

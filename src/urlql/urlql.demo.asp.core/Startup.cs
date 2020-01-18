@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Serialization;
 using urlql.demo.asp.core.Entities;
 
 namespace urlql.demo.asp.core
@@ -31,9 +32,13 @@ namespace urlql.demo.asp.core
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(options =>
-                {
-                    options.ModelBinderProviders.Insert(0, new urlql.asp.core.QueryArgumentsBinderProvider());
-                })
+            {
+                options.ModelBinderProviders.Insert(0, new urlql.asp.core.QueryArgumentsBinderProvider());
+            })
+            .AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            })
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddEntityFrameworkSqlite().AddDbContext<NorthwindContext>();

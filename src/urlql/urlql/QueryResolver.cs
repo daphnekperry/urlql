@@ -186,7 +186,10 @@ namespace urlql
                 {
                     if (arguments.HasSelections)
                     {
-                        if (!arguments.Selections.OfType<IQueryableStatement>().Where(s => s.PropertyName == order.PropertyName).Any())
+                        var selections = arguments.Selections.GetSelections();
+                        var aggregations = arguments.Selections.GetAggregations();
+
+                        if (!selections.Where(s => order.PropertyName.ToLowerInvariant() == (s?.Alias?.NewName?.ToLowerInvariant() ?? s.PropertyName.ToLowerInvariant())).Any() && !aggregations.Where(a => order.PropertyName.ToLowerInvariant() == a?.Alias?.NewName?.ToLowerInvariant()).Any())
                         {
                             throw new QueryException($"order: cannot order by property {order.PropertyName}");
                         }
@@ -230,11 +233,11 @@ namespace urlql
                 IList<IGroupingStatement> groupStatements = new List<IGroupingStatement>();
                 foreach (var g in arguments.Grouping.Distinct())
                 {
-                    if (!selections.Where(s => g.PropertyName == (s.Alias?.NewName ?? s.PropertyName)).Any() || aggregations.Where(a => g.PropertyName == a.Alias.NewName).Any())
+                    if (!selections.Where(s => g.PropertyName.ToLowerInvariant() == (s?.Alias?.NewName?.ToLowerInvariant() ?? s.PropertyName.ToLowerInvariant())).Any() || aggregations.Where(a => g.PropertyName.ToLowerInvariant() == a?.Alias?.NewName?.ToLowerInvariant()).Any())
                     {
                         throw new QueryException($"group: cannot group on {g}");
                     }
-                    Grouping group = new Grouping(arguments.Selections.OfType<IAliasableStatement>().Where(s => g.PropertyName == (s.Alias?.NewName ?? s.PropertyName)).FirstOrDefault().PropertyName);
+                    Grouping group = new Grouping(arguments.Selections.OfType<IAliasableStatement>().Where(s => g.PropertyName.ToLowerInvariant() == (s.Alias?.NewName?.ToLowerInvariant() ?? s.PropertyName.ToLowerInvariant())).FirstOrDefault().PropertyName);
                     if (!validator.Validate(group))
                     {
                         throw new QueryException($"group: cannot group on {g}");
@@ -273,7 +276,6 @@ namespace urlql
                 if (!arguments.HasGrouping && aggregations.Any() && selections.Any())
                 {
                     throw new QueryException("select: missing 'group' statement");
-                    //throw new QueryException($"group: must include {aggregations.FirstOrDefault()?.Alias?.NewName ?? selections.FirstOrDefault()?.PropertyName } from 'select' statment");
                 }
 
                 if (!arguments.HasGrouping && aggregations.Any() && !selections.Any())
