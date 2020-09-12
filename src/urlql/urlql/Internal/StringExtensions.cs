@@ -19,5 +19,16 @@ namespace urlql.Internal
             var preped = str.Replace("(", " ( ").Replace(")", " ) ").Trim();
             return Regex.Split(preped, StringLiteralRegex).Where(s => !string.IsNullOrEmpty(s.Trim())).Select(s => s.Trim());
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="str1"></param>
+        /// <param name="str2"></param>
+        /// <returns></returns>
+        public static bool CompareCaseInsensitive(this string str1, string str2)
+        {
+            return (string.Compare(str1, str2, StringComparison.OrdinalIgnoreCase)) == 0;
+        }
     }
 }

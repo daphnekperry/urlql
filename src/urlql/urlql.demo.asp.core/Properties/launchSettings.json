@@ -19,7 +19,6 @@
     },
     "urlql.demo.asp.core": {
       "commandName": "Project",
-      "launchBrowser": true,
       "launchUrl": "api/customers",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

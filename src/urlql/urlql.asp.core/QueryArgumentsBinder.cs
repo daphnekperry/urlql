@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using urlql.Expressions;
 using urlql.Parsers;
+using urlql.Internal;
 
 namespace urlql.asp.core
 {
@@ -84,8 +85,8 @@ namespace urlql.asp.core
             try
             {
                 // Both Skip and Take must be provided
-                bool hasSkip = parameters.Where(x => x.Key?.ToLowerInvariant() == @"skip").Any();
-                bool hasTake = parameters.Where(x => x.Key?.ToLowerInvariant() == @"take").Any();
+                bool hasSkip = parameters.Where(x => x.Key?.CompareCaseInsensitive(@"skip") ?? false).Any();
+                bool hasTake = parameters.Where(x => x.Key?.CompareCaseInsensitive(@"take") ?? false).Any();
                 if (!hasTake && hasSkip)
                 {
                     throw new QueryException("take: missing value");
@@ -96,13 +97,13 @@ namespace urlql.asp.core
                 }
 
                 // must be integers
-                var skipExpression = parameters.Where(x => x.Key?.ToLowerInvariant() == @"skip").FirstOrDefault().Value;
+                var skipExpression = parameters.Where(x => x.Key?.CompareCaseInsensitive(@"skip") ?? false).FirstOrDefault().Value;
                 bool isValidSkip = int.TryParse(skipExpression, out int skip);
                 if (hasSkip && !isValidSkip)
                 {
                     throw new QueryException($"skip: invalid statement {skipExpression}");
                 }
-                var takeExpression = parameters.Where(x => x.Key?.ToLowerInvariant() == @"take").FirstOrDefault().Value;
+                var takeExpression = parameters.Where(x => x.Key?.CompareCaseInsensitive(@"take") ?? false).FirstOrDefault().Value;
                 bool isValidTake = int.TryParse(takeExpression, out int take);
                 if (hasTake && !isValidTake)
                 {
@@ -141,8 +142,8 @@ namespace urlql.asp.core
         /// <returns></returns>
         protected IList<T> GetArguments<T>(IExpressionParser<T> parser, params string[] keywords) where T : IStatement
         {
-            var keywordList = keywords.Select(k => k.ToLower()).ToList();
-            var paramKeys = queryStringValues.Keys.Intersect(keywordList).ToList();
+            var keywordList = keywords.Select(k => k.ToLowerInvariant()).ToList();
+            var paramKeys = queryStringValues.Keys.Select(k => k.ToLowerInvariant()).Intersect(keywordList).ToList();
             if (!paramKeys.Any())
             {
                 return null;
@@ -154,7 +155,7 @@ namespace urlql.asp.core
             }
 
             var key = paramKeys.FirstOrDefault();
-            string expression = queryStringValues.Where(x => x.Key?.ToLowerInvariant() == key).FirstOrDefault().Value;
+            string expression = queryStringValues.Where(x => x.Key?.CompareCaseInsensitive(key) ?? false).FirstOrDefault().Value;
             if (string.IsNullOrEmpty(expression))
             {
                 return null;
