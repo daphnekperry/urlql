@@ -13,6 +13,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\urlql.asp.core\urlql.asp.core.csproj" />
+    <ProjectReference Include="..\urlql.mergepatch.core\urlql.mergepatch.core.csproj" />
+    <ProjectReference Include="..\urlql.mergepatch\urlql.mergepatch.csproj" />
     <ProjectReference Include="..\urlql\urlql.csproj" />
   </ItemGroup>
 

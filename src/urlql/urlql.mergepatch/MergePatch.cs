@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace urlql
 {
@@ -15,6 +16,11 @@ namespace urlql
 
         public MergePatch(JObject baseObject)
             : base(baseObject)
+        {
+        }
+
+        public MergePatch(string json)
+            : base(JsonConvert.DeserializeObject<JObject>(json))
         {
         }
 

@@ -34,6 +34,7 @@ namespace urlql.demo.asp.core
             services.AddMvc(options =>
             {
                 options.ModelBinderProviders.Insert(0, new urlql.asp.core.QueryArgumentsBinderProvider());
+                options.ModelBinderProviders.Insert(1, new urlql.mergepatch.core.ModelBinding.MergePatchModelBinderProvider());
             })
             .AddJsonOptions(options =>
             {

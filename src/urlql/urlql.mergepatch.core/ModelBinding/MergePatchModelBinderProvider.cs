@@ -5,7 +5,7 @@ using System.Text;
 
 namespace urlql.mergepatch.core.ModelBinding
 {
-    public class MergePatchModelBinderProvider
+    public class MergePatchModelBinderProvider : IModelBinderProvider
     {
         /// <summary>
         /// IModelBinderProvider implementation
@@ -19,7 +19,7 @@ namespace urlql.mergepatch.core.ModelBinding
                 throw new ArgumentNullException(nameof(context));
             }
 
-            if (context.Metadata.ModelType.GetGenericTypeDefinition() == typeof(MergePatch<>))
+            if (this.TryGetGenericType(context.Metadata.ModelType) == typeof(MergePatch<>))
             {
                 var types = context.Metadata.ModelType.GetGenericArguments();
                 Type o = typeof(MergePatchModelBinder<>).MakeGenericType(types);
@@ -28,6 +28,21 @@ namespace urlql.mergepatch.core.ModelBinding
                 return obj as IModelBinder;
             }
 
+            return null;
+        }
+
+        protected Type TryGetGenericType(Type type)
+        {
+            try
+            {
+                if (!type.IsGenericType)
+                {
+                    return null;
+                }
+                return type.GetGenericTypeDefinition();
+            }
+            catch
+            { }
             return null;
         }
     }

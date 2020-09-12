@@ -328,7 +328,7 @@ namespace urlql
         /// </summary>
         /// <param name="query"></param>
         /// <param name="typeInfo"></param>
-        /// <param name="fetchOneMore"></param>
+        /// <param name="fetchAdditional"></param>
         /// <returns></returns>
         protected virtual IQueryable ApplyPaging(IQueryable query, QueryableObjectTypeInfo typeInfo, bool fetchAdditional = false)
         {

@@ -45,4 +45,29 @@ namespace urlql.test.Parsers
             Assert.AreEqual(statement.Alias.NewName, "money");
         }
     }
+
+    public class SelectWtihBadAliasStatement : SelectionStatementParserTests
+    {
+        private urlql.Parsers.SelectionExpressionParser parser { get; set; }
+        private Exception expectedException { get; set; }
+
+        protected override void Arrange()
+        {
+            base.Arrange();
+            expression = "Dollars alias money";
+            parser = new urlql.Parsers.SelectionExpressionParser();
+        }
+
+        protected override void Act()
+        {
+            expectedException = Assert.Catch(() => parser.ParseExpression(expression));
+        }
+
+        [Test]
+        public void FailsToParse()
+        {
+            Assert.IsNotNull(expectedException);
+        }
+
+    }
 }

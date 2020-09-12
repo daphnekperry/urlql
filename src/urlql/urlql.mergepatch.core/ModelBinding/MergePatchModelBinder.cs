@@ -35,18 +35,18 @@ namespace urlql.mergepatch.core.ModelBinding
             {
                 throw new ArgumentNullException(nameof(bindingContext));
             }
-            context = bindingContext;
 
+            context = bindingContext;
+            context.HttpContext.Request.EnableRewind();
             try
             {
                 string objectJson = string.Empty;
-                context.HttpContext.Request.EnableRewind();
                 using (var reader = new StreamReader(context.HttpContext.Request.Body, Encoding.UTF8, true, 1024, true))
                 {
                     objectJson = reader.ReadToEnd();
                 }
 
-                bindingContext.Result = ModelBindingResult.Success(new MergePatch<T>(JsonConvert.DeserializeObject<JObject>(objectJson)));
+                bindingContext.Result = ModelBindingResult.Success(new MergePatch<T>(objectJson));
             }
             catch
             {
