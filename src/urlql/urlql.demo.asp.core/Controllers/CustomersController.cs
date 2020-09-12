@@ -65,7 +65,7 @@ namespace urlql.demo.asp.core.Controllers
             if (nullValues.Any())
             {
                 string msg = "The following contain null values:";
-                nullValues.ForEach(n => msg = new string(msg.Concat($" {n}").ToArray()));
+                nullValues.ForEach(n => msg = new string(string.Concat(msg, $" {n}")));
                 return new BadRequestObjectResult(msg);
             }
 
