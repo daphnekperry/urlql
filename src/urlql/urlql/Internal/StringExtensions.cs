@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace urlql.Internal
 {
@@ -21,14 +22,15 @@ namespace urlql.Internal
         }
 
         /// <summary>
-        /// 
+        /// Case Insensitive Comparison with optional ClutureInfo
         /// </summary>
         /// <param name="str1"></param>
         /// <param name="str2"></param>
         /// <returns></returns>
-        public static bool CompareCaseInsensitive(this string str1, string str2)
+        /// <remarks>Defaults to CultureInfo.InvariantCulture</remarks>
+        public static bool CompareCaseInsensitive(this string str1, string str2, CultureInfo culture = null)
         {
-            return (string.Compare(str1, str2, StringComparison.OrdinalIgnoreCase)) == 0;
+            return (string.Compare(str1, str2, true, culture ?? CultureInfo.InvariantCulture)) == 0;
         }
     }
 }

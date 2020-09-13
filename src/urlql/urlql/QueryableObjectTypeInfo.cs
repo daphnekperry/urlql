@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using urlql.Internal;
 
 namespace urlql
 {
@@ -87,7 +88,7 @@ namespace urlql
         /// <returns></returns>
         public QueryablePropertyTypeInfo GetPropertyTypeInfo(string propertyName)
         {
-            return propertyDefinitions.Where(d=> d.Key.ToLowerInvariant() == propertyName.ToLowerInvariant()).SingleOrDefault().Value;
+            return propertyDefinitions.Where(d=> d.Key.CompareCaseInsensitive(propertyName)).SingleOrDefault().Value;
         }
 
         /// <summary>

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Newtonsoft.Json;
+using urlql.mergepatch.Internal;
 
 namespace urlql
 {
@@ -26,11 +27,10 @@ namespace urlql
 
         public bool IsValid()
         {
+            // Get all assignable members
             List<string> memberNames = new List<string>();
-
             memberNames.AddRange(Type.GetProperties().Where(p => p.SetMethod != null).Select(p => p.Name.ToLowerInvariant()));
             memberNames.AddRange(Type.GetFields().Where(f => f.IsPublic).Select(f => f.Name.ToLowerInvariant()));
-
             if (this.Properties().Select(p => p.Name.ToLowerInvariant()).Except(memberNames).Any())
             {
                 return false;
@@ -42,7 +42,14 @@ namespace urlql
                 {
                     // TODO: Cleanup this uglyness and cache type info.*
                     // TODO: String handling is really permissive on input, we need to do hard checks for string literals and enforce that
-                    var x = Type.GetProperties().Where(p => p.SetMethod != null && p.Name.ToLowerInvariant() == prop.Name.ToLowerInvariant()).FirstOrDefault()?.PropertyType ?? Type.GetFields().Where(f => f.IsPublic && f.Name.ToLowerInvariant() == prop.Name.ToLowerInvariant()).FirstOrDefault()?.FieldType;
+                    var x =
+                    Type.GetProperties()
+                        .Where(p => p.SetMethod != null && p.Name.CompareCaseInsensitive(prop.Name))
+                        ?.FirstOrDefault()?.PropertyType
+                    ??
+                    Type.GetFields()
+                        .Where(f => f.IsPublic && f.Name.CompareCaseInsensitive(prop.Name))
+                        ?.FirstOrDefault()?.FieldType;
                     System.Convert.ChangeType(prop.Value.ToString(), x);
                 }
                 catch
@@ -79,13 +86,13 @@ namespace urlql
 
             foreach (var prop in this.Properties())
             {
-                var clrProperty = Type.GetProperties().Where(p => p.SetMethod != null && p.Name.ToLowerInvariant() == prop.Name.ToLowerInvariant()).FirstOrDefault();
+                var clrProperty = Type.GetProperties().Where(p => p.SetMethod != null && p.Name.CompareCaseInsensitive(prop.Name))?.FirstOrDefault();
                 if (clrProperty != null)
                 {
                     clrProperty.SetValue(target, System.Convert.ChangeType(prop.Value.ToString(), clrProperty.PropertyType));
                     continue;
                 }
-                var clrField = Type.GetFields().Where(f => f.IsPublic && f.Name.ToLowerInvariant() == prop.Name.ToLowerInvariant()).FirstOrDefault();
+                var clrField = Type.GetFields().Where(f => f.IsPublic && f.Name.CompareCaseInsensitive(prop.Name))?.FirstOrDefault();
                 if (clrField != null)
                 {
                     clrField.SetValue(target, System.Convert.ChangeType(prop.Value.ToString(), clrField.FieldType));
